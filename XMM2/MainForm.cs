@@ -528,13 +528,14 @@ namespace XMM2
                     {
                         MessageBox.Show("No image path found.");
                     }
-                    
-
 
                 }
             }
-            catch { }
-            
+            catch
+            {
+                //  Display an error message.
+                //  MessageBox.Show("Error Detected.");
+            }
         }
 
         private void GenreListBox_SelectedIndexChanged(object sender, EventArgs e)
