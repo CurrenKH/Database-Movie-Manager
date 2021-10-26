@@ -14,10 +14,10 @@ namespace XMM2
     public partial class MainForm : Form
     {
         //  Constants to use when creating connections to the database
-        private const string DbServerHost = "127.0.0.1";
-        private const string DbUsername = "CurrenH";
-        private const string DbUuserPassword = "dfcg22r";
-        private const string DbName = "oop";
+        private const string dbHost = "127.0.0.1";
+        private const string dbUsername = "CurrenH";
+        private const string dbPassword = "dfcg22r";
+        private const string dbName = "oop";
 
         //  Declare MySQL connection
         MySqlConnection dbConnection;
@@ -104,10 +104,10 @@ namespace XMM2
                     currentMovie.Rating = dataReader.GetDouble(4);
 
                     //  Load all genres associated with the movie
-                    currentMovie.Genres = LoadMovieGenres(currentMovie.ID); 
+                    currentMovie.Genres = LoadMovieGenres(currentMovie.ID);
 
                     //  If the image path is empty, declare string to make instance not null
-                    if (dataReader.GetString(5)=="")
+                    if (dataReader.GetString(5) == "")
                     {
                         currentMovie.ImagePath = @"images\noimage.jpg";
                         movieImageList.Images.Add(Image.FromFile(currentMovie.ImagePath.ToString()));
@@ -134,7 +134,7 @@ namespace XMM2
             catch
             {
                 MessageBox.Show("Error detected here.");
-            }            
+            }
 
             //  After executing the queries close the connection
             dbConnection.Close();
@@ -146,19 +146,19 @@ namespace XMM2
         private List<Genre> LoadMovieGenres(int movieID)
         {
             //  The following objects will be used to access the jt_genre_movie table
-            MySqlConnection dbConnection2 = CreateDBConnection(DbServerHost, DbUsername, DbUuserPassword, DbName);
+            MySqlConnection dbConnection2 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
             MySqlCommand dbCommand2;
             MySqlDataReader dataReader2;
 
             //The following objects will be used to access the genre table
-            MySqlConnection dbConnection3 = CreateDBConnection(DbServerHost, DbUsername, DbUuserPassword, DbName);
+            MySqlConnection dbConnection3 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
             MySqlCommand dbCommand3;
             MySqlDataReader dataReader3;
 
 
-            string currentGenreCode;
+            string existingGenreCode;
 
-            Genre currentGenre;
+            Genre existingGenre;
 
             //  Declare genre list
             List<Genre> GenreList = new List<Genre>();
@@ -178,15 +178,15 @@ namespace XMM2
             //  While there are genre_codes in dataReader2
             while (dataReader2.Read())
             {
-                currentGenre = new Genre();
+                existingGenre = new Genre();
 
-                currentGenreCode = dataReader2.GetString(0);
+                existingGenreCode = dataReader2.GetString(0);
 
                 //  Open a connection to access the genre table
                 dbConnection3.Open();
 
                 //  SQL query checking
-                sqlQuery = "SELECT * FROM genre WHERE code = '" + currentGenreCode + "';";
+                sqlQuery = "SELECT * FROM genre WHERE code = '" + existingGenreCode + "';";
 
                 Console.WriteLine("sqlQuery = " + sqlQuery);
 
@@ -198,14 +198,14 @@ namespace XMM2
                 dataReader3.Read();
 
                 //  Associate read genre objects with the data reader
-                currentGenre.Code = dataReader3.GetString(0);
-                currentGenre.Name = dataReader3.GetString(1);
-                currentGenre.Description = dataReader3.GetString(2);
+                existingGenre.Code = dataReader3.GetString(0);
+                existingGenre.Name = dataReader3.GetString(1);
+                existingGenre.Description = dataReader3.GetString(2);
 
-                Console.WriteLine("currentGenre = " + currentGenre.Code + " - " + currentGenre.Name + " - " + currentGenre.Description);
+                Console.WriteLine("currentGenre = " + existingGenre.Code + " - " + existingGenre.Name + " - " + existingGenre.Description);
 
                 //  Add to the genre list
-                GenreList.Add(currentGenre);
+                GenreList.Add(existingGenre);
 
                 //  Close DB connection
                 dbConnection3.Close();
@@ -217,14 +217,14 @@ namespace XMM2
             return GenreList;
         }
 
-       
+
         private void DisplayMovies()
         {
             for (int i = 0; i < Movies.Count; i++)
             {
                 moviesListView.Items.Add(Movies[i].Title);
                 moviesListView.Items[i].SubItems.Add(Movies[i].Year.ToString());
-                moviesListView.Items[i].SubItems.Add(Movies[i].Length.ToString());
+                moviesListView.Items[i].SubItems.Add(Movies[i].ID.ToString());
             }
         }
 
@@ -232,24 +232,21 @@ namespace XMM2
         {
             //  Formatting for all ListView columns
 
-            ColumnHeader columnHeader1 = new ColumnHeader();
-            columnHeader1.Text = "Title";
-            columnHeader1.TextAlign = HorizontalAlignment.Left;
-            columnHeader1.Width = 160;
-            moviesListView.Columns.Add(columnHeader1);
+            ColumnHeader titleColumn = new ColumnHeader();
+            titleColumn.Text = "Title";
+            titleColumn.Width = 160;
+            moviesListView.Columns.Add(titleColumn);
             moviesListView.View = View.Details;
 
-            ColumnHeader columnHeader2 = new ColumnHeader();
-            columnHeader2.Text = "Year";
-            columnHeader2.TextAlign = HorizontalAlignment.Left;
-            columnHeader2.Width = 80;
-            moviesListView.Columns.Add(columnHeader2);
+            ColumnHeader yearColumn = new ColumnHeader();
+            yearColumn.Text = "Year";
+            yearColumn.Width = 80;
+            moviesListView.Columns.Add(yearColumn);
 
-            ColumnHeader columnHeader3 = new ColumnHeader();
-            columnHeader3.Text = "Length";
-            columnHeader3.TextAlign = HorizontalAlignment.Left;
-            columnHeader3.Width = 80;
-            moviesListView.Columns.Add(columnHeader3);
+            ColumnHeader idColumn = new ColumnHeader();
+            idColumn.Text = "ID";
+            idColumn.Width = 80;
+            moviesListView.Columns.Add(idColumn);
 
             //  Disable TextBoxes to be made read only and not modifiable
             titleTextBox.Enabled = false;
@@ -293,10 +290,10 @@ namespace XMM2
                 currentGenre.Code = dataReader.GetString(0);
                 currentGenre.Name = dataReader.GetString(1);
 
-                Console.WriteLine("Code = " + currentGenre.Code+"\n"+ "Name = "+ currentGenre.Name);
+                Console.WriteLine("Code = " + currentGenre.Code + "\n" + "Name = " + currentGenre.Name);
 
                 Genres.Add(currentGenre);
-
+                addMovieGenreComboBox.Items.Add(currentGenre.Name);
             }
 
             //  Close DB connection
@@ -386,27 +383,49 @@ namespace XMM2
             this.Close();
         }
 
+        private int MovieData(string movieTitle)
+        {
+            //  Declare counter for loop
+            int counter = 0;
+
+            //  Loop to read each movie found in the list
+            foreach (Movie movies in Movies)
+            {
+                if (movieTitle != Movies[counter].Title)
+                {
+                    counter++;
+                }
+            }
+            return counter;
+        }
+
         private void MoviesListView_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
 
-                int index = moviesListView.FocusedItem.Index;
-
-                //  If there is no item selected
-                if (moviesListView.SelectedIndices.Count <= 0)
+                //  If an item is selected
+                if (moviesListView.SelectedItems.Count > 0)
                 {
-                    return;
-                }
+                    //  Set int variable to selected ListView item in array (#0)
+                    int intselectedindex = moviesListView.SelectedIndices[0];
 
-                //  Declare index value as integer variable
-                int intselectedindex = moviesListView.SelectedIndices[0];
-
-                //  If there is an item selected
-                if (intselectedindex >= 0)
-                {
                     //  String selected ListView item (movie title) as text
-                    String text = moviesListView.Items[intselectedindex].Text;
+                    string text = moviesListView.Items[intselectedindex].Text;
+
+                    //  Associate genre field from selected movie
+                    foreach (Genre genre in Movies[MovieData(text)].Genres)
+                    {
+                        genreTextBox.Text = genre.Name.ToString();
+                    }
+
+                    //  Fields to display information by the movie list item via loop method -> title
+                    idTextBox.Text = Movies[MovieData(text)].ID.ToString();
+                    titleTextBox.Text = Movies[MovieData(text)].Title;
+                    yearTextBox.Text = Movies[MovieData(text)].Year.ToString();
+                    lengthTextBox.Text = Movies[MovieData(text)].Length.ToString();
+                    ratingTextBox.Text = Movies[MovieData(text)].Rating.ToString("N2");
+                    imagePathTextBox.Text = Movies[MovieData(text)].ImagePath;
 
                     //  String variable for Regex argument (input, pattern, replacement string data)
                     string replacement = Regex.Replace(text, @"\t|\n|\r", "");
@@ -415,40 +434,8 @@ namespace XMM2
                     int imageIndex = Movies.FindIndex(a => a.Title == replacement);
                     moviePictureBox.Image = movieImageList.Images[imageIndex];
                 }
-
-                for (int i = 0; i < moviesListView.Items.Count; i++)
-                {
-                    //  Display movie info in TextBoxes
-                    if (moviesListView.Items[i].Selected)
-                    {
-                        //  TextBoxes to display information requested
-                        titleTextBox.Text = moviesListView.Items[i].SubItems[0].Text;
-                        yearTextBox.Text = moviesListView.Items[i].SubItems[1].Text;
-                        lengthTextBox.Text = moviesListView.Items[i].SubItems[2].Text;
-                    }
-                }
-
-                //  Declare selected item in ListView to be the focused element
-                int selected = moviesListView.FocusedItem.Index;
-
-                //  Declare variables for movie and genre
-                Movie getMovie;
-                Genre getGenre;
-
-                for (int i = 0; i < moviesListView.Items.Count; i++)
-                    if (moviesListView.Items[i].Selected)
-                    {
-                        //  Selected items for the lists
-                        getMovie = (Movie)Movies[selected];
-                        getGenre = (Genre)Genres[selected];
-
-                        //  TextBoxes to display information requested
-                        ratingTextBox.Text = getMovie.Rating.ToString();
-                        genreTextBox.Text = getGenre.Name;
-                        imagePathTextBox.Text = getMovie.ImagePath;
-                    }
-                
             }
+
 
             catch
             {
@@ -496,17 +483,16 @@ namespace XMM2
                     }
                 }
 
-                //-------------------------------
-
-                //  If there is no selected item
+                //  If there is no selected item in the ListBox
                 if (membersListBox.SelectedIndices.Count <= 0)
                 {
                     return;
                 }
 
+                //  Declare int variable for the selected indice (#0) in the ListBox
                 int selectedindex = membersListBox.SelectedIndices[0];
 
-
+                //  If there is a selected item (greater than 0 which is 1)
                 if (selectedindex >= 0)
                 {
                     //  String selected ListBox item (member name) as text
@@ -538,30 +524,212 @@ namespace XMM2
             }
         }
 
+        private int InsertMovieInDB(Movie newMovie)
+        {
+            try
+            {
+                //  The following objects will be used to create a movie item in the movie table
+                MySqlConnection dbConnection4 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+                MySqlCommand dbCommand4;
+
+                //  Declare int variable for rows affected upon changes
+                int queryResult;
+
+                //  Open database connection
+                dbConnection4.Open();
+
+                //  SQL query to execute in the db
+                string sqlQuery = "INSERT INTO movie VALUES('" + newMovie.ID + "', '" + newMovie.Title + "', '"
+                    + newMovie.Year + "', '" + newMovie.Length + "', '" + newMovie.Rating + "', '" + newMovie.ImagePath + "');";
+
+                //  SQL containing the query to be executed
+                dbCommand4 = new MySqlCommand(sqlQuery, dbConnection4);
+
+                queryResult = dbCommand4.ExecuteNonQuery();
+
+                //  Close DB connection
+                dbConnection4.Close();
+
+                return queryResult;
+
+            }
+            catch
+            {
+                //  Error Message
+                MessageBox.Show("Error upon insertion detected.");
+
+                //  Open and close connection upon an error
+                MySqlConnection dbConnection4 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+
+                dbConnection4.Close();
+
+                return 0;
+            }
+        }
+        private void AddMovieButton_Click(object sender, EventArgs e)
+        {
+            //  Replace inputted backslashes inserted by OpenFileDialog to forward slashes
+            //  Due to MySQL deleting backslashes in its syntax when read
+            addMovieImagePathTextBox.Text = addMovieImagePathTextBox.Text.Replace("\\", "/");
+
+            //  Declare movie variable
+            Movie newMovie = new Movie();
+
+            //  New movie data values pointed to the add movie fields
+            newMovie.ID = int.Parse(addMovieIDTextBox.Text);
+            newMovie.Title = addMovieTitleTextBox.Text;
+            newMovie.Year = int.Parse(addMovieYearTextBox.Text);
+            newMovie.Length = int.Parse(addMovieLengthTextBox.Text);
+            newMovie.Rating = double.Parse(addMovieRatingTextBox.Text);
+            newMovie.ImagePath = addMovieImagePathTextBox.Text;
+
+            //  Empty Movies list
+            Movies = new List<Movie>();
+
+            //  Call method to insert add movie fields from form to a movie object in the list
+            InsertMovieInDB(newMovie);
+
+            //  Clear imageList for adding movie item
+            movieImageList.Images.Clear();
+
+            //  Read movies from the database
+            getMoviesFromDB();
+
+            //  Read movie list and display updated data
+            UpdateListView();
+
+            //  Method to clear add movie TextBox/ComboBox data
+            ClearAddMovieInputs();
+        }
+
         private void GenreListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //  Clear ListBox
-            moviesListView.Items.Clear();
+            //  Clear ListView
+            moviesListView.Clear();
 
-            //  String item selected
-            string selected = genreListBox.SelectedItem.ToString();
+            //  Method to format the ListView
+            FormatListView();
 
-            foreach (Movie entry in Movies)
+            //  Counting all genres that exist in the list
+            foreach (Genre currentGenre in Genres)
             {
-                foreach(Genre genre in entry.Genres)
+                //  Show information corresponding to the selected ListBox item
+                if (genreListBox.SelectedItem.ToString() == currentGenre.Name)
                 {
-                    int i = 0;
+                    genreCodeTextBox.Text = currentGenre.Code;
+                    genreNameTextBox.Text = currentGenre.Name;
 
-                    //  Add items to ListView with the corresponding data
-                    moviesListView.Items.Add(entry.Title);
-                    moviesListView.Items[i].SubItems.Add(entry.Year.ToString());
-                    moviesListView.Items[i].SubItems.Add(entry.Length.ToString());
-
-                    i++;
-
+                    //  (Displaying error for description, reason unknown at the moment)
+                    genreDescriptionTextBox.Text = currentGenre.Description;
                 }
             }
-            
+
+            //  Each movie which has a genre
+            foreach (Movie currentMovie in Movies)
+            {
+                foreach (Genre currentGenre in currentMovie.Genres)
+                {
+                    //  If the ListBox selected item is equivalent to a genre name selected
+                    if (genreListBox.SelectedItem.ToString() == currentGenre.Name)
+                    {
+                        //  Create LVI and populate ListView under the correct genre chosen from genreListBox
+                        ListViewItem lvi = new ListViewItem();
+                        lvi.Text = currentMovie.Title;
+                        lvi.SubItems.Add(currentMovie.Year.ToString());
+                        lvi.SubItems.Add(currentMovie.ID.ToString());
+
+                        //  Add object to ListView
+                        moviesListView.Items.Add(lvi);
+                    }
+                }
+            }
+        }
+        private void UpdateListView()
+        {
+            //  Clear ListView
+            moviesListView.Items.Clear();
+
+            //  For each item name add it to the ListView
+            for (int i = 0; i < Movies.Count; i++)
+            {
+                //  Create ListViewItem to hold the title and year for each movie
+                ListViewItem lvi = new ListViewItem();
+                lvi.Text = Movies[i].Title;
+                lvi.SubItems.Add(Movies[i].Year.ToString());
+                lvi.SubItems.Add(Movies[i].ID.ToString());
+
+                //  Populate ListView with created LVI item
+                moviesListView.Items.Add(lvi);
+
+                //  If there is a ListView item selected
+                if (moviesListView.SelectedItems.Count > 0)
+                {
+                    //  Set int variable to selected ListView item in array (#0)
+                    int intselectedindex = moviesListView.SelectedIndices[0];
+
+                    //  String selected ListView item (movie title) as text
+                    String text = moviesListView.Items[intselectedindex].Text;
+
+                    //  String variable for Regex argument (input, pattern, replacement string data)
+                    string replacement = Regex.Replace(text, @"\t|\n|\r", "");
+
+                    //  Find image index for Movies list to affiliate the correct image with the selected movie
+                    int imageIndex = Movies.FindIndex(a => a.Title == replacement);
+                    moviePictureBox.Image = movieImageList.Images[imageIndex];
+                }
+            }
+        }
+        private void ClearMovieInputs()
+        {
+            // Clear TextBoxes
+            idTextBox.Text = "";
+            titleTextBox.Text = "";
+            genreTextBox.Text = "";
+            yearTextBox.Text = "";
+            lengthTextBox.Text = "";
+            ratingTextBox.Text = "";
+            imagePathTextBox.Text = "";
+
+            //  Clear pictureBox
+            moviePictureBox.Image = null;
+        }
+
+        private void ClearAddMovieInputs()
+        {
+            addMovieIDTextBox.Text = "";
+            addMovieTitleTextBox.Text = "";
+            addMovieGenreComboBox.Text = "";
+            addMovieYearTextBox.Text = "";
+            addMovieLengthTextBox.Text = "";
+            addMovieRatingTextBox.Text = "";
+            addMovieImagePathTextBox.Text = "";
+        }
+
+        private void ResetFilterButton_Click_1(object sender, EventArgs e)
+        {
+            //  Remove movie data method
+            ClearMovieInputs();
+
+            //  Method to refresh the ListView data
+            UpdateListView();
+        }
+
+        private void AddMovieImagePathButton_Click(object sender, EventArgs e)
+        {
+            //  Use FileDialog to search for an image to select
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+
+            //  Set filter to only show images to select from
+            openFileDialog1.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+
+            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                //  String variable for the file path and name taken from OpenFileDialog
+                string selectedImagePath = openFileDialog1.FileName;
+
+                //  Set image path TextBox by the selected file
+                addMovieImagePathTextBox.Text = selectedImagePath;
+            }
         }
     }
 }
