@@ -222,9 +222,14 @@ namespace XMM2
         {
             for (int i = 0; i < Movies.Count; i++)
             {
-                moviesListView.Items.Add(Movies[i].Title);
-                moviesListView.Items[i].SubItems.Add(Movies[i].Year.ToString());
-                moviesListView.Items[i].SubItems.Add(Movies[i].ID.ToString());
+                //  Create LVI and populate ListView
+                ListViewItem lvi = new ListViewItem();
+                lvi.Text = Movies[i].Title;
+                lvi.SubItems.Add(Movies[i].Year.ToString());
+                lvi.SubItems.Add(Movies[i].ID.ToString());
+
+                //  Add object to ListView
+                moviesListView.Items.Add(lvi);
             }
         }
 
