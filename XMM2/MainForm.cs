@@ -432,11 +432,8 @@ namespace XMM2
                     ratingTextBox.Text = Movies[MovieData(text)].Rating.ToString("N2");
                     imagePathTextBox.Text = Movies[MovieData(text)].ImagePath;
 
-                    //  String variable for Regex argument (input, pattern, replacement string data)
-                    string replacement = Regex.Replace(text, @"\t|\n|\r", "");
-
                     //  Find image index for movieList to affiliate the correct image with the selected movie
-                    int imageIndex = Movies.FindIndex(a => a.Title == replacement);
+                    int imageIndex = Movies.FindIndex(a => a.Title == text);
                     moviePictureBox.Image = movieImageList.Images[imageIndex];
                 }
             }
@@ -503,11 +500,8 @@ namespace XMM2
                     //  String selected ListBox item (member name) as text
                     String text = membersListBox.Items[selectedindex].ToString();
 
-                    //  String variable for Regex argument (input, pattern, replacement string data)
-                    string replacement = Regex.Replace(text, @"\t|\n|\r", "");
-
                     //  Find image index for member to affiliate the correct image with the selected member
-                    int index = Members.FindIndex(a => a.Name == replacement);
+                    int index = Members.FindIndex(a => a.Name == text);
 
                     try
                     {
