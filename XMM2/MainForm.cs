@@ -171,8 +171,10 @@ namespace XMM2
 
             Console.WriteLine("sqlQuery = " + sqlQuery);
 
+            //  Pair query with db connection
             dbCommand2 = new MySqlCommand(sqlQuery, dbConnection2);
 
+            //  Execute SQL query
             dataReader2 = dbCommand2.ExecuteReader();
 
             //  While there are genre_codes in dataReader2
@@ -190,8 +192,10 @@ namespace XMM2
 
                 Console.WriteLine("sqlQuery = " + sqlQuery);
 
+                //  Pair query with db connection
                 dbCommand3 = new MySqlCommand(sqlQuery, dbConnection3);
 
+                //  Execute SQL query
                 dataReader3 = dbCommand3.ExecuteReader();
 
                 //  Read a line from the genre table
@@ -292,12 +296,16 @@ namespace XMM2
                 //  Declare new movie
                 currentGenre = new Genre();
 
+                //  Associate genre items from db
                 currentGenre.Code = dataReader.GetString(0);
                 currentGenre.Name = dataReader.GetString(1);
 
                 Console.WriteLine("Code = " + currentGenre.Code + "\n" + "Name = " + currentGenre.Name);
 
+                //  Add to genre list
                 Genres.Add(currentGenre);
+
+                //  Add to ComboBox
                 addMovieGenreComboBox.Items.Add(currentGenre.Name);
             }
 
@@ -544,6 +552,7 @@ namespace XMM2
                 //  SQL containing the query to be executed
                 dbCommand4 = new MySqlCommand(sqlQuery, dbConnection4);
 
+                //  Result of rows affected
                 queryResult = dbCommand4.ExecuteNonQuery();
 
                 //  Close DB connection
@@ -695,6 +704,7 @@ namespace XMM2
 
         private void ClearAddMovieInputs()
         {
+            //  Clear TextBoxes
             addMovieIDTextBox.Text = "";
             addMovieTitleTextBox.Text = "";
             addMovieGenreComboBox.Text = "";
