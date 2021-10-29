@@ -472,9 +472,12 @@ namespace XMM2
                     //  TextBoxes to display information requested
                     memberIDTextBox.Text = checkMember.ID.ToString();
                     memberNameTextBox.Text = checkMember.Name;
-                    memberDOBTextBox.Text = checkMember.DOB.ToString();
-                    memberImagePathTextBox.Text = checkMember.ImagePath;
 
+                    //  DateTime conversion to remove the Hours//Minutes//Seconds displayed
+                    memberDOBTextBox.Text = Convert.ToDateTime(checkMember.DOB).ToString("yyyy-MM-dd");
+                    memberImagePathTextBox.Text = checkMember.ImagePath;
+                    memberTypeComboBox.Text = checkMember.Type.ToString();
+                    /*
                     //  Check assigned integer for each member type and display correct string
                     if (checkMember.Type == 1)
                     {
@@ -492,6 +495,7 @@ namespace XMM2
                     {
                         memberTypeComboBox.Text = "Director of photography";
                     }
+                    */
                 }
 
                 //  If there is no selected item in the ListBox
@@ -580,6 +584,7 @@ namespace XMM2
         {
             //  Replace inputted backslashes inserted by OpenFileDialog to forward slashes
             //  Due to MySQL deleting backslashes in its syntax when read
+            //  Source: https://stackoverflow.com/questions/41935210/replace-all-blackslashes-with-forward-slash/41935242
             addMovieImagePathTextBox.Text = addMovieImagePathTextBox.Text.Replace("\\", "/");
 
             //  Declare movie variable
@@ -788,6 +793,9 @@ namespace XMM2
             memberDOBTextBox.Text = "";
             memberTypeComboBox.Text = "";
             memberImagePathTextBox.Text = "";
+
+            //  Clear pictureBox
+            memberPictureBox.Image = null;
         }
 
         private void ResetFilterButton_Click_1(object sender, EventArgs e)
@@ -853,6 +861,50 @@ namespace XMM2
             ClearAddMemberInputs();
         }
 
+        private int ModifyDBMember(Member modifyMember)
+        {
+            try
+            {
+                //  The following objects will be used to modify a selected member item in the member table
+                MySqlConnection dbConnection7 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+
+                //  Declare int variable for rows affected upon changes
+                int queryResult;
+
+                //  Open database connection
+                dbConnection7.Open();
+
+                //  SQL query to execute in the db         
+                string sqlQuery = "UPDATE member SET name = '" + modifyMember.Name + "', date_of_birth = '" + Convert.ToDateTime(modifyMember.DOB).ToString("yyyy-MM-dd") +
+                    "', member_type_id = '" + modifyMember.Type + "', image_file_path = '" + modifyMember.ImagePath + "' WHERE id = " + modifyMember.ID + ";";
+
+                //  SQL containing the query to be executed
+                MySqlCommand dbCommand7 = new MySqlCommand(sqlQuery, dbConnection7);
+
+                //  Result of rows affected
+                queryResult = dbCommand7.ExecuteNonQuery();
+
+                //  Close DB connection
+                dbConnection7.Close();
+
+                return queryResult;
+            }
+            catch
+            {
+                //  Error Message
+                MessageBox.Show("Error upon member modification detected.");
+
+                //  Open and close connection upon an error
+                MySqlConnection dbConnection7 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+
+                //  Close DB connection
+                dbConnection7.Close();
+
+                return 0;
+            }
+        }
+
+
         private void AddMemberImagePathButton_Click(object sender, EventArgs e)
         {
             //  Use FileDialog to search for an image to select
@@ -876,7 +928,7 @@ namespace XMM2
             {
                 //  The following objects will be used to create a member item in the member table
                 MySqlConnection dbConnection6 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
-                MySqlCommand dbCommand5;
+                MySqlCommand dbCommand6;
 
                 //  Declare int variable for rows affected upon changes
                 int queryResult;
@@ -888,10 +940,10 @@ namespace XMM2
                 string sqlQuery = "DELETE FROM member WHERE id = '" + deleteMember.ID + "';";
 
                 //  SQL containing the query to be executed
-                dbCommand5 = new MySqlCommand(sqlQuery, dbConnection6);
+                dbCommand6 = new MySqlCommand(sqlQuery, dbConnection6);
 
                 //  Result of rows affected
-                queryResult = dbCommand5.ExecuteNonQuery();
+                queryResult = dbCommand6.ExecuteNonQuery();
 
                 //  Close DB connection
                 dbConnection6.Close();
@@ -936,8 +988,96 @@ namespace XMM2
             //  Read member list and display updated data
             UpdateMemberListBox();
 
-            //  Method to clear member TextBox/ComboBox data
+            //  Method to clear member TextBox/ComboBox/pictureBox data
             ClearMemberInputs();
+        }
+
+        private void ModifyMemberButton_Click(object sender, EventArgs e)
+        {
+            //  Check if a ListBox selection for members exists
+            if (membersListBox.SelectedIndex < 0)
+            {
+                //  Show error message
+                MessageBox.Show("Select a member from the ListBox.");
+            }
+            //  Otherwise continue actions
+            else
+            {
+                //  Enable TextBoxes and Button to allow access for changes made by the user
+                memberNameTextBox.Enabled = true;
+                memberDOBTextBox.Enabled = true;
+                memberTypeComboBox.Enabled = true;
+                memberImagePathButton.Enabled = true;
+            }
+        }
+
+        private void MemberImagePathButton_Click(object sender, EventArgs e)
+        {
+            //  Use FileDialog to search for an image to select
+            OpenFileDialog modifyMemberImage = new OpenFileDialog();
+
+            //  Set filter to only show images to select from
+            modifyMemberImage.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+
+            if (modifyMemberImage.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                //  String variable for the file path and name taken from OpenFileDialog
+                string selectedImagePath = modifyMemberImage.FileName;
+
+                //  Set image path TextBox by the selected file
+                memberImagePathTextBox.Text = selectedImagePath;
+            }
+        }
+
+        private void SaveMemberButton_Click(object sender, EventArgs e)
+        {
+            //  Check if a ListBox selection for members exists
+            if (membersListBox.SelectedIndex < 0)
+            {
+                //  Show error message
+                MessageBox.Show("Select a member from the ListBox first if you wish to make any changes.");
+            }
+            else
+            {
+                //  Replace inputted backslashes inserted by OpenFileDialog to forward slashes
+                //  Due to MySQL deleting backslashes in its syntax when read
+                memberImagePathTextBox.Text = memberImagePathTextBox.Text.Replace("\\", "/");
+
+                //  Declare member variable
+                Member modifyMember = new Member();
+
+                //  Modified member data values pointed to the add member fields
+                //  ID is not able to be changed due to it being the primary key
+                modifyMember.ID = int.Parse(memberIDTextBox.Text);
+                modifyMember.Name = memberNameTextBox.Text;
+                modifyMember.DOB = DateTime.Parse(memberDOBTextBox.Text);
+                modifyMember.Type = int.Parse(memberTypeComboBox.Text);
+                modifyMember.ImagePath = memberImagePathTextBox.Text;
+
+                //  Empty Members list
+                Members = new List<Member>();
+
+                //  Call method to modify and update member from the list
+                ModifyDBMember(modifyMember);
+
+                //  Clear imageList for adding member item
+                membersImageList.Images.Clear();
+
+                //  Read members from the database
+                ReadMembersDB();
+
+                //  Read member list and display updated data
+                UpdateMemberListBox();
+
+                //  Method to clear member TextBox/ComboBox/pictureBox data
+                ClearMemberInputs();
+
+                //  Disable TextBoxes and Button to deny access for anymore changes made by the user
+                memberNameTextBox.Enabled = false;
+                memberDOBTextBox.Enabled = false;
+                memberTypeComboBox.Enabled = false;
+                memberImagePathButton.Enabled = false;
+            }
         }
     }
 }

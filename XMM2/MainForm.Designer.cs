@@ -127,6 +127,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.memberTypeComboBox = new System.Windows.Forms.ComboBox();
             this.addMemberTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.moviePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -204,6 +205,7 @@
             this.modifyMemberButton.TabIndex = 6;
             this.modifyMemberButton.Text = "Modify member";
             this.modifyMemberButton.UseVisualStyleBackColor = true;
+            this.modifyMemberButton.Click += new System.EventHandler(this.ModifyMemberButton_Click);
             // 
             // deleteMovieButton
             // 
@@ -376,7 +378,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(843, 104);
+            this.label16.Location = new System.Drawing.Point(843, 108);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(42, 17);
             this.label16.TabIndex = 44;
@@ -455,7 +457,7 @@
             // memberDOBTextBox
             // 
             this.memberDOBTextBox.Enabled = false;
-            this.memberDOBTextBox.Location = new System.Drawing.Point(892, 101);
+            this.memberDOBTextBox.Location = new System.Drawing.Point(892, 105);
             this.memberDOBTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.memberDOBTextBox.Name = "memberDOBTextBox";
             this.memberDOBTextBox.Size = new System.Drawing.Size(164, 22);
@@ -649,6 +651,7 @@
             this.saveMemberButton.TabIndex = 104;
             this.saveMemberButton.Text = "Save Modifications";
             this.saveMemberButton.UseVisualStyleBackColor = true;
+            this.saveMemberButton.Click += new System.EventHandler(this.SaveMemberButton_Click);
             // 
             // saveMovieButton
             // 
@@ -691,6 +694,7 @@
             // 
             // memberImagePathButton
             // 
+            this.memberImagePathButton.Enabled = false;
             this.memberImagePathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.memberImagePathButton.Location = new System.Drawing.Point(1063, 171);
             this.memberImagePathButton.Name = "memberImagePathButton";
@@ -699,6 +703,7 @@
             this.memberImagePathButton.Text = "...";
             this.memberImagePathButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.memberImagePathButton.UseVisualStyleBackColor = true;
+            this.memberImagePathButton.Click += new System.EventHandler(this.MemberImagePathButton_Click);
             // 
             // addMemberImagePathButton
             // 
@@ -1030,6 +1035,7 @@
             // 
             // memberTypeComboBox
             // 
+            this.memberTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.memberTypeComboBox.Enabled = false;
             this.memberTypeComboBox.FormattingEnabled = true;
             this.memberTypeComboBox.Items.AddRange(new object[] {
@@ -1044,6 +1050,7 @@
             // 
             // addMemberTypeComboBox
             // 
+            this.addMemberTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.addMemberTypeComboBox.FormattingEnabled = true;
             this.addMemberTypeComboBox.Items.AddRange(new object[] {
             "1",
@@ -1055,11 +1062,22 @@
             this.addMemberTypeComboBox.Size = new System.Drawing.Size(164, 24);
             this.addMemberTypeComboBox.TabIndex = 161;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(808, 95);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(75, 13);
+            this.label3.TabIndex = 162;
+            this.label3.Text = "YYYY-MM-DD";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1357, 731);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.addMemberTypeComboBox);
             this.Controls.Add(this.memberTypeComboBox);
             this.Controls.Add(this.label2);
@@ -1271,6 +1289,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox memberTypeComboBox;
         private System.Windows.Forms.ComboBox addMemberTypeComboBox;
+        private System.Windows.Forms.Label label3;
     }
 }
 
