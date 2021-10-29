@@ -39,11 +39,11 @@ namespace XMM2
             // =======================================================
 
 
-            getMoviesFromDB();
+            ReadMoviesDB();
 
-            getGenresFromDB();
+            ReadGenresDB();
 
-            getMembersFromDB();
+            ReadMembersDB();
         }
 
         private void SetDBConnection(string serverAddress, string username, string password, string dbName)
@@ -63,7 +63,7 @@ namespace XMM2
 
             return dbConnection;
         }
-        private void getMoviesFromDB()
+        private void ReadMoviesDB()
         {
             //  Clear ListView
             moviesListView.Items.Clear();
@@ -270,7 +270,7 @@ namespace XMM2
             //  Call method to format movieListView
             FormatListView();
         }
-        private void getGenresFromDB()
+        private void ReadGenresDB()
         {
             Genre currentGenre;
 
@@ -327,7 +327,7 @@ namespace XMM2
             }
         }
 
-        private void getMembersFromDB()
+        private void ReadMembersDB()
         {
             //  Clear members list
             Members.Clear();
@@ -470,6 +470,7 @@ namespace XMM2
                     checkMember = (Member)Members[selected];
 
                     //  TextBoxes to display information requested
+                    memberIDTextBox.Text = checkMember.ID.ToString();
                     memberNameTextBox.Text = checkMember.Name;
                     memberDOBTextBox.Text = checkMember.DOB.ToString();
                     memberImagePathTextBox.Text = checkMember.ImagePath;
@@ -477,19 +478,19 @@ namespace XMM2
                     //  Check assigned integer for each member type and display correct string
                     if (checkMember.Type == 1)
                     {
-                        memberTypeTextBox.Text = "Actor/Actresse";
+                        memberTypeComboBox.Text = "Actor/Actresse";
                     }
                     else if (checkMember.Type == 2)
                     {
-                        memberTypeTextBox.Text = "Director";
+                        memberTypeComboBox.Text = "Director";
                     }
                     else if (checkMember.Type == 3)
                     {
-                        memberTypeTextBox.Text = "Producer";
+                        memberTypeComboBox.Text = "Producer";
                     }
                     else if (checkMember.Type == 4)
                     {
-                        memberTypeTextBox.Text = "Director of photography";
+                        memberTypeComboBox.Text = "Director of photography";
                     }
                 }
 
@@ -531,7 +532,7 @@ namespace XMM2
             }
         }
 
-        private int InsertMovieInDB(Movie newMovie)
+        private int InsertDBMovie(Movie newMovie)
         {
             try
             {
@@ -564,11 +565,12 @@ namespace XMM2
             catch
             {
                 //  Error Message
-                MessageBox.Show("Error upon insertion detected.");
+                MessageBox.Show("Error upon movie insertion detected.");
 
                 //  Open and close connection upon an error
                 MySqlConnection dbConnection4 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
 
+                //  Close DB connection
                 dbConnection4.Close();
 
                 return 0;
@@ -595,13 +597,13 @@ namespace XMM2
             Movies = new List<Movie>();
 
             //  Call method to insert add movie fields from form to a movie object in the list
-            InsertMovieInDB(newMovie);
+            InsertDBMovie(newMovie);
 
             //  Clear imageList for adding movie item
             movieImageList.Images.Clear();
 
             //  Read movies from the database
-            getMoviesFromDB();
+            ReadMoviesDB();
 
             //  Read movie list and display updated data
             UpdateListView();
@@ -609,6 +611,50 @@ namespace XMM2
             //  Method to clear add movie TextBox/ComboBox data
             ClearAddMovieInputs();
         }
+        private int InsertDBMember(Member newMember)
+        {
+            try
+            {
+                //  The following objects will be used to create a member item in the member table
+                MySqlConnection dbConnection5 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+                MySqlCommand dbCommand5;
+
+                //  Declare int variable for rows affected upon changes
+                int queryResult;
+
+                //  Open database connection
+                dbConnection5.Open();
+
+                //  SQL query to execute in the db
+                string sqlQuery = "INSERT INTO member VALUES('" + newMember.ID + "', '" + newMember.Name + "', '" + Convert.ToDateTime(newMember.DOB).ToString("yyyy-MM-dd") +
+                "', '" + newMember.Type + "', '" + newMember.ImagePath + "');";
+
+                //  SQL containing the query to be executed
+                dbCommand5 = new MySqlCommand(sqlQuery, dbConnection5);
+
+                //  Result of rows affected
+                queryResult = dbCommand5.ExecuteNonQuery();
+
+                //  Close DB connection
+                dbConnection5.Close();
+
+                return queryResult;
+            }
+            catch
+            {
+                //  Error Message
+                MessageBox.Show("Error upon member insertion detected.");
+
+                //  Open and close connection upon an error
+                MySqlConnection dbConnection5 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+
+                //  Close DB connection
+                dbConnection5.Close();
+
+                return 0;
+            }    
+        }
+
 
         private void GenreListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -687,6 +733,17 @@ namespace XMM2
                 }
             }
         }
+
+        private void UpdateMemberListBox()
+        {
+            //  Clear ListBox
+            membersListBox.Items.Clear();
+            //  For each item name add it to the ListView
+            for (int i = 0; i < Members.Count; i++)
+            {
+                membersListBox.Items.Add(Members[i].Name);
+            }
+        }
         private void ClearMovieInputs()
         {
             // Clear TextBoxes
@@ -713,6 +770,25 @@ namespace XMM2
             addMovieRatingTextBox.Text = "";
             addMovieImagePathTextBox.Text = "";
         }
+        private void ClearAddMemberInputs()
+        {
+            //  Clear TextBoxes
+            addMemberIDTextBox.Text = "";
+            addMemberNameTextBox.Text = "";
+            addMemberDOBTextBox.Text = "";
+            addMemberTypeComboBox.Text = "";
+            addMemberImagePathTextBox.Text = "";
+        }
+
+        private void ClearMemberInputs()
+        {
+            //  Clear TextBoxes
+            memberIDTextBox.Text = "";
+            memberNameTextBox.Text = "";
+            memberDOBTextBox.Text = "";
+            memberTypeComboBox.Text = "";
+            memberImagePathTextBox.Text = "";
+        }
 
         private void ResetFilterButton_Click_1(object sender, EventArgs e)
         {
@@ -726,19 +802,142 @@ namespace XMM2
         private void AddMovieImagePathButton_Click(object sender, EventArgs e)
         {
             //  Use FileDialog to search for an image to select
-            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            OpenFileDialog addMovieImage = new OpenFileDialog();
 
             //  Set filter to only show images to select from
-            openFileDialog1.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+            addMovieImage.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
 
-            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (addMovieImage.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 //  String variable for the file path and name taken from OpenFileDialog
-                string selectedImagePath = openFileDialog1.FileName;
+                string selectedImagePath = addMovieImage.FileName;
 
                 //  Set image path TextBox by the selected file
                 addMovieImagePathTextBox.Text = selectedImagePath;
             }
+        }
+
+        private void AddMemberButton_Click(object sender, EventArgs e)
+        {
+            //  Replace inputted backslashes inserted by OpenFileDialog to forward slashes
+            //  Due to MySQL deleting backslashes in its syntax when read
+            addMemberImagePathTextBox.Text = addMemberImagePathTextBox.Text.Replace("\\", "/");
+
+            //  Declare member variable
+            Member newMember = new Member();
+
+            //  New member data values pointed to the add member fields
+            newMember.ID = int.Parse(addMemberIDTextBox.Text);
+            newMember.Name = addMemberNameTextBox.Text;
+            newMember.DOB = DateTime.Parse(addMemberDOBTextBox.Text);
+            newMember.Type = int.Parse(addMemberTypeComboBox.Text);
+            newMember.ImagePath = addMemberImagePathTextBox.Text;
+
+
+            //  Empty Members list
+            Members = new List<Member>();
+
+            //  Call method to insert add member fields from form to a member object in the list
+            InsertDBMember(newMember);
+
+            //  Clear imageList for adding member item
+            membersImageList.Images.Clear();
+
+            //  Read members from the database
+            ReadMembersDB();
+
+            //  Read member list and display updated data
+            UpdateMemberListBox();
+
+            //  Method to clear add member TextBox/ComboBox data
+            ClearAddMemberInputs();
+        }
+
+        private void AddMemberImagePathButton_Click(object sender, EventArgs e)
+        {
+            //  Use FileDialog to search for an image to select
+            OpenFileDialog addMemberImage = new OpenFileDialog();
+
+            //  Set filter to only show images to select from
+            addMemberImage.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.tif;...";
+
+            if (addMemberImage.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                //  String variable for the file path and name taken from OpenFileDialog
+                string selectedImagePath = addMemberImage.FileName;
+
+                //  Set image path TextBox by the selected file
+                addMemberImagePathTextBox.Text = selectedImagePath;
+            }
+        }
+        private int DeleteDBMember(Member deleteMember)
+        {
+            try
+            {
+                //  The following objects will be used to create a member item in the member table
+                MySqlConnection dbConnection6 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+                MySqlCommand dbCommand5;
+
+                //  Declare int variable for rows affected upon changes
+                int queryResult;
+
+                //  Open database connection
+                dbConnection6.Open();
+
+                //  SQL query to execute in the db
+                string sqlQuery = "DELETE FROM member WHERE id = '" + deleteMember.ID + "';";
+
+                //  SQL containing the query to be executed
+                dbCommand5 = new MySqlCommand(sqlQuery, dbConnection6);
+
+                //  Result of rows affected
+                queryResult = dbCommand5.ExecuteNonQuery();
+
+                //  Close DB connection
+                dbConnection6.Close();
+
+                return queryResult;
+            }
+            catch
+            {
+                //  Error Message
+                MessageBox.Show("Error upon member deletion detected.");
+
+                //  Open and close connection upon an error
+                MySqlConnection dbConnection6 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+
+                //  Close DB connection
+                dbConnection6.Close();
+
+                return 0;
+            }
+
+        }
+        private void DeleteMemberButton_Click(object sender, EventArgs e)
+        {
+            //  Declare member variable
+            Member deleteMember = new Member();
+
+            //  Selected member data values pointed to the read only member ID field
+            deleteMember.ID = int.Parse(memberIDTextBox.Text);
+
+            //  Empty Members list
+            Members = new List<Member>();
+
+            //  Call method to delete member from the list according to the member fields read
+            DeleteDBMember(deleteMember);
+
+            //  Clear imageList for adding member item
+            membersImageList.Images.Clear();
+
+            //  Read members from the database
+            ReadMembersDB();
+
+            //  Read member list and display updated data
+            UpdateMemberListBox();
+
+            //  Method to clear member TextBox/ComboBox data
+            ClearMemberInputs();
         }
     }
 }

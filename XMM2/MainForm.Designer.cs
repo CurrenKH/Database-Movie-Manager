@@ -64,7 +64,6 @@
             this.label9 = new System.Windows.Forms.Label();
             this.memberNameTextBox = new System.Windows.Forms.TextBox();
             this.memberDOBTextBox = new System.Windows.Forms.TextBox();
-            this.memberTypeTextBox = new System.Windows.Forms.TextBox();
             this.movieLabel = new System.Windows.Forms.Label();
             this.genreLabel = new System.Windows.Forms.Label();
             this.genreDescriptionLabel = new System.Windows.Forms.Label();
@@ -88,14 +87,6 @@
             this.saveMovieButton = new System.Windows.Forms.Button();
             this.memberImagePathTextBox = new System.Windows.Forms.TextBox();
             this.memberImagePathLabel = new System.Windows.Forms.Label();
-            this.addMemberImagePathTextBox = new System.Windows.Forms.TextBox();
-            this.addMemberImagePathLabel = new System.Windows.Forms.Label();
-            this.addMemberTypeTextBox = new System.Windows.Forms.TextBox();
-            this.addMemberDOBTextBox = new System.Windows.Forms.TextBox();
-            this.addMemberNameTextBox = new System.Windows.Forms.TextBox();
-            this.addMemberTypeLabel = new System.Windows.Forms.Label();
-            this.addMemberDOBLabel = new System.Windows.Forms.Label();
-            this.addMemberNameLabel = new System.Windows.Forms.Label();
             this.movieImagePathButton = new System.Windows.Forms.Button();
             this.memberImagePathButton = new System.Windows.Forms.Button();
             this.addMemberImagePathButton = new System.Windows.Forms.Button();
@@ -120,6 +111,22 @@
             this.genreDescriptionTextBox = new System.Windows.Forms.TextBox();
             this.resetFilterButton = new System.Windows.Forms.Button();
             this.addMovieGenreComboBox = new System.Windows.Forms.ComboBox();
+            this.memberIDTextBox = new System.Windows.Forms.TextBox();
+            this.memberIDLabel = new System.Windows.Forms.Label();
+            this.addMemberIDTextBox = new System.Windows.Forms.TextBox();
+            this.addMemberIDLabel = new System.Windows.Forms.Label();
+            this.addMemberImagePathTextBox = new System.Windows.Forms.TextBox();
+            this.addMemberImagePathLabel = new System.Windows.Forms.Label();
+            this.addMemberDOBTextBox = new System.Windows.Forms.TextBox();
+            this.addMemberNameTextBox = new System.Windows.Forms.TextBox();
+            this.addMemberTypeLabel = new System.Windows.Forms.Label();
+            this.addMemberDOBLabel = new System.Windows.Forms.Label();
+            this.addMemberIDName = new System.Windows.Forms.Label();
+            this.addMemberDOBFormatLabel = new System.Windows.Forms.Label();
+            this.memberTypeNumbersLabel = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.memberTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.addMemberTypeComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.moviePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -169,13 +176,14 @@
             // 
             // addMemberButton
             // 
-            this.addMemberButton.Location = new System.Drawing.Point(1031, 366);
+            this.addMemberButton.Location = new System.Drawing.Point(1042, 381);
             this.addMemberButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.addMemberButton.Name = "addMemberButton";
             this.addMemberButton.Size = new System.Drawing.Size(152, 44);
             this.addMemberButton.TabIndex = 4;
             this.addMemberButton.Text = "Add member";
             this.addMemberButton.UseVisualStyleBackColor = true;
+            this.addMemberButton.Click += new System.EventHandler(this.AddMemberButton_Click);
             // 
             // modifyMovieButton
             // 
@@ -189,7 +197,7 @@
             // 
             // modifyMemberButton
             // 
-            this.modifyMemberButton.Location = new System.Drawing.Point(836, 192);
+            this.modifyMemberButton.Location = new System.Drawing.Point(824, 213);
             this.modifyMemberButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.modifyMemberButton.Name = "modifyMemberButton";
             this.modifyMemberButton.Size = new System.Drawing.Size(99, 44);
@@ -209,13 +217,14 @@
             // 
             // deleteMemberButton
             // 
-            this.deleteMemberButton.Location = new System.Drawing.Point(1195, 366);
+            this.deleteMemberButton.Location = new System.Drawing.Point(1206, 381);
             this.deleteMemberButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.deleteMemberButton.Name = "deleteMemberButton";
             this.deleteMemberButton.Size = new System.Drawing.Size(152, 44);
             this.deleteMemberButton.TabIndex = 8;
             this.deleteMemberButton.Text = "Delete member";
             this.deleteMemberButton.UseVisualStyleBackColor = true;
+            this.deleteMemberButton.Click += new System.EventHandler(this.DeleteMemberButton_Click);
             // 
             // movieTitleLabel
             // 
@@ -338,7 +347,7 @@
             // memberPictureBox
             // 
             this.memberPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.memberPictureBox.Location = new System.Drawing.Point(1118, 14);
+            this.memberPictureBox.Location = new System.Drawing.Point(1141, 1);
             this.memberPictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.memberPictureBox.Name = "memberPictureBox";
             this.memberPictureBox.Size = new System.Drawing.Size(199, 184);
@@ -358,7 +367,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(836, 45);
+            this.label15.Location = new System.Drawing.Point(836, 74);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(49, 17);
             this.label15.TabIndex = 43;
@@ -367,7 +376,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(843, 87);
+            this.label16.Location = new System.Drawing.Point(843, 104);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(42, 17);
             this.label16.TabIndex = 44;
@@ -397,7 +406,7 @@
             // 
             this.membersListBox.FormattingEnabled = true;
             this.membersListBox.ItemHeight = 16;
-            this.membersListBox.Location = new System.Drawing.Point(805, 259);
+            this.membersListBox.Location = new System.Drawing.Point(803, 280);
             this.membersListBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.membersListBox.Name = "membersListBox";
             this.membersListBox.Size = new System.Drawing.Size(217, 100);
@@ -428,7 +437,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(841, 125);
+            this.label9.Location = new System.Drawing.Point(841, 155);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(44, 17);
             this.label9.TabIndex = 58;
@@ -437,7 +446,7 @@
             // memberNameTextBox
             // 
             this.memberNameTextBox.Enabled = false;
-            this.memberNameTextBox.Location = new System.Drawing.Point(892, 42);
+            this.memberNameTextBox.Location = new System.Drawing.Point(892, 71);
             this.memberNameTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.memberNameTextBox.Name = "memberNameTextBox";
             this.memberNameTextBox.Size = new System.Drawing.Size(164, 22);
@@ -446,20 +455,11 @@
             // memberDOBTextBox
             // 
             this.memberDOBTextBox.Enabled = false;
-            this.memberDOBTextBox.Location = new System.Drawing.Point(892, 84);
+            this.memberDOBTextBox.Location = new System.Drawing.Point(892, 101);
             this.memberDOBTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.memberDOBTextBox.Name = "memberDOBTextBox";
             this.memberDOBTextBox.Size = new System.Drawing.Size(164, 22);
             this.memberDOBTextBox.TabIndex = 60;
-            // 
-            // memberTypeTextBox
-            // 
-            this.memberTypeTextBox.Enabled = false;
-            this.memberTypeTextBox.Location = new System.Drawing.Point(892, 122);
-            this.memberTypeTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.memberTypeTextBox.Name = "memberTypeTextBox";
-            this.memberTypeTextBox.Size = new System.Drawing.Size(164, 22);
-            this.memberTypeTextBox.TabIndex = 61;
             // 
             // movieLabel
             // 
@@ -532,7 +532,7 @@
             // 
             this.membersLabel.AutoSize = true;
             this.membersLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.membersLabel.Location = new System.Drawing.Point(812, 237);
+            this.membersLabel.Location = new System.Drawing.Point(810, 258);
             this.membersLabel.Name = "membersLabel";
             this.membersLabel.Size = new System.Drawing.Size(92, 20);
             this.membersLabel.TabIndex = 86;
@@ -542,7 +542,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(1059, 192);
+            this.label5.Location = new System.Drawing.Point(1125, 187);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 20);
             this.label5.TabIndex = 93;
@@ -642,7 +642,7 @@
             // 
             // saveMemberButton
             // 
-            this.saveMemberButton.Location = new System.Drawing.Point(941, 192);
+            this.saveMemberButton.Location = new System.Drawing.Point(929, 213);
             this.saveMemberButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.saveMemberButton.Name = "saveMemberButton";
             this.saveMemberButton.Size = new System.Drawing.Size(99, 44);
@@ -663,7 +663,7 @@
             // memberImagePathTextBox
             // 
             this.memberImagePathTextBox.Enabled = false;
-            this.memberImagePathTextBox.Location = new System.Drawing.Point(892, 161);
+            this.memberImagePathTextBox.Location = new System.Drawing.Point(892, 182);
             this.memberImagePathTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.memberImagePathTextBox.Name = "memberImagePathTextBox";
             this.memberImagePathTextBox.Size = new System.Drawing.Size(164, 22);
@@ -672,79 +672,11 @@
             // memberImagePathLabel
             // 
             this.memberImagePathLabel.AutoSize = true;
-            this.memberImagePathLabel.Location = new System.Drawing.Point(802, 164);
+            this.memberImagePathLabel.Location = new System.Drawing.Point(802, 185);
             this.memberImagePathLabel.Name = "memberImagePathLabel";
             this.memberImagePathLabel.Size = new System.Drawing.Size(83, 17);
             this.memberImagePathLabel.TabIndex = 108;
             this.memberImagePathLabel.Text = "Image Path:";
-            // 
-            // addMemberImagePathTextBox
-            // 
-            this.addMemberImagePathTextBox.Location = new System.Drawing.Point(1118, 333);
-            this.addMemberImagePathTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.addMemberImagePathTextBox.Name = "addMemberImagePathTextBox";
-            this.addMemberImagePathTextBox.Size = new System.Drawing.Size(164, 22);
-            this.addMemberImagePathTextBox.TabIndex = 118;
-            // 
-            // addMemberImagePathLabel
-            // 
-            this.addMemberImagePathLabel.AutoSize = true;
-            this.addMemberImagePathLabel.Location = new System.Drawing.Point(1028, 336);
-            this.addMemberImagePathLabel.Name = "addMemberImagePathLabel";
-            this.addMemberImagePathLabel.Size = new System.Drawing.Size(83, 17);
-            this.addMemberImagePathLabel.TabIndex = 117;
-            this.addMemberImagePathLabel.Text = "Image Path:";
-            // 
-            // addMemberTypeTextBox
-            // 
-            this.addMemberTypeTextBox.Location = new System.Drawing.Point(1118, 294);
-            this.addMemberTypeTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.addMemberTypeTextBox.Name = "addMemberTypeTextBox";
-            this.addMemberTypeTextBox.Size = new System.Drawing.Size(164, 22);
-            this.addMemberTypeTextBox.TabIndex = 116;
-            // 
-            // addMemberDOBTextBox
-            // 
-            this.addMemberDOBTextBox.Location = new System.Drawing.Point(1118, 256);
-            this.addMemberDOBTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.addMemberDOBTextBox.Name = "addMemberDOBTextBox";
-            this.addMemberDOBTextBox.Size = new System.Drawing.Size(164, 22);
-            this.addMemberDOBTextBox.TabIndex = 115;
-            // 
-            // addMemberNameTextBox
-            // 
-            this.addMemberNameTextBox.Location = new System.Drawing.Point(1118, 214);
-            this.addMemberNameTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.addMemberNameTextBox.Name = "addMemberNameTextBox";
-            this.addMemberNameTextBox.Size = new System.Drawing.Size(164, 22);
-            this.addMemberNameTextBox.TabIndex = 114;
-            // 
-            // addMemberTypeLabel
-            // 
-            this.addMemberTypeLabel.AutoSize = true;
-            this.addMemberTypeLabel.Location = new System.Drawing.Point(1067, 297);
-            this.addMemberTypeLabel.Name = "addMemberTypeLabel";
-            this.addMemberTypeLabel.Size = new System.Drawing.Size(44, 17);
-            this.addMemberTypeLabel.TabIndex = 113;
-            this.addMemberTypeLabel.Text = "Type:";
-            // 
-            // addMemberDOBLabel
-            // 
-            this.addMemberDOBLabel.AutoSize = true;
-            this.addMemberDOBLabel.Location = new System.Drawing.Point(1069, 259);
-            this.addMemberDOBLabel.Name = "addMemberDOBLabel";
-            this.addMemberDOBLabel.Size = new System.Drawing.Size(42, 17);
-            this.addMemberDOBLabel.TabIndex = 112;
-            this.addMemberDOBLabel.Text = "DOB:";
-            // 
-            // addMemberNameLabel
-            // 
-            this.addMemberNameLabel.AutoSize = true;
-            this.addMemberNameLabel.Location = new System.Drawing.Point(1062, 217);
-            this.addMemberNameLabel.Name = "addMemberNameLabel";
-            this.addMemberNameLabel.Size = new System.Drawing.Size(49, 17);
-            this.addMemberNameLabel.TabIndex = 111;
-            this.addMemberNameLabel.Text = "Name:";
             // 
             // movieImagePathButton
             // 
@@ -760,7 +692,7 @@
             // memberImagePathButton
             // 
             this.memberImagePathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.memberImagePathButton.Location = new System.Drawing.Point(1063, 150);
+            this.memberImagePathButton.Location = new System.Drawing.Point(1063, 171);
             this.memberImagePathButton.Name = "memberImagePathButton";
             this.memberImagePathButton.Size = new System.Drawing.Size(48, 35);
             this.memberImagePathButton.TabIndex = 121;
@@ -771,13 +703,14 @@
             // addMemberImagePathButton
             // 
             this.addMemberImagePathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addMemberImagePathButton.Location = new System.Drawing.Point(1289, 322);
+            this.addMemberImagePathButton.Location = new System.Drawing.Point(1300, 337);
             this.addMemberImagePathButton.Name = "addMemberImagePathButton";
             this.addMemberImagePathButton.Size = new System.Drawing.Size(48, 35);
             this.addMemberImagePathButton.TabIndex = 122;
             this.addMemberImagePathButton.Text = "...";
             this.addMemberImagePathButton.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.addMemberImagePathButton.UseVisualStyleBackColor = true;
+            this.addMemberImagePathButton.Click += new System.EventHandler(this.AddMemberImagePathButton_Click);
             // 
             // addMovieImagePathButton
             // 
@@ -969,11 +902,180 @@
             this.addMovieGenreComboBox.Size = new System.Drawing.Size(134, 24);
             this.addMovieGenreComboBox.TabIndex = 144;
             // 
+            // memberIDTextBox
+            // 
+            this.memberIDTextBox.Enabled = false;
+            this.memberIDTextBox.Location = new System.Drawing.Point(892, 43);
+            this.memberIDTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.memberIDTextBox.Name = "memberIDTextBox";
+            this.memberIDTextBox.Size = new System.Drawing.Size(164, 22);
+            this.memberIDTextBox.TabIndex = 146;
+            // 
+            // memberIDLabel
+            // 
+            this.memberIDLabel.AutoSize = true;
+            this.memberIDLabel.Location = new System.Drawing.Point(858, 46);
+            this.memberIDLabel.Name = "memberIDLabel";
+            this.memberIDLabel.Size = new System.Drawing.Size(25, 17);
+            this.memberIDLabel.TabIndex = 145;
+            this.memberIDLabel.Text = "ID:";
+            // 
+            // addMemberIDTextBox
+            // 
+            this.addMemberIDTextBox.Location = new System.Drawing.Point(1129, 207);
+            this.addMemberIDTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.addMemberIDTextBox.Name = "addMemberIDTextBox";
+            this.addMemberIDTextBox.Size = new System.Drawing.Size(164, 22);
+            this.addMemberIDTextBox.TabIndex = 156;
+            // 
+            // addMemberIDLabel
+            // 
+            this.addMemberIDLabel.AutoSize = true;
+            this.addMemberIDLabel.Location = new System.Drawing.Point(1095, 210);
+            this.addMemberIDLabel.Name = "addMemberIDLabel";
+            this.addMemberIDLabel.Size = new System.Drawing.Size(25, 17);
+            this.addMemberIDLabel.TabIndex = 155;
+            this.addMemberIDLabel.Text = "ID:";
+            // 
+            // addMemberImagePathTextBox
+            // 
+            this.addMemberImagePathTextBox.Enabled = false;
+            this.addMemberImagePathTextBox.Location = new System.Drawing.Point(1129, 347);
+            this.addMemberImagePathTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.addMemberImagePathTextBox.Name = "addMemberImagePathTextBox";
+            this.addMemberImagePathTextBox.Size = new System.Drawing.Size(164, 22);
+            this.addMemberImagePathTextBox.TabIndex = 154;
+            // 
+            // addMemberImagePathLabel
+            // 
+            this.addMemberImagePathLabel.AutoSize = true;
+            this.addMemberImagePathLabel.Location = new System.Drawing.Point(1039, 350);
+            this.addMemberImagePathLabel.Name = "addMemberImagePathLabel";
+            this.addMemberImagePathLabel.Size = new System.Drawing.Size(83, 17);
+            this.addMemberImagePathLabel.TabIndex = 153;
+            this.addMemberImagePathLabel.Text = "Image Path:";
+            // 
+            // addMemberDOBTextBox
+            // 
+            this.addMemberDOBTextBox.Location = new System.Drawing.Point(1129, 265);
+            this.addMemberDOBTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.addMemberDOBTextBox.Name = "addMemberDOBTextBox";
+            this.addMemberDOBTextBox.Size = new System.Drawing.Size(164, 22);
+            this.addMemberDOBTextBox.TabIndex = 151;
+            // 
+            // addMemberNameTextBox
+            // 
+            this.addMemberNameTextBox.Location = new System.Drawing.Point(1129, 235);
+            this.addMemberNameTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.addMemberNameTextBox.Name = "addMemberNameTextBox";
+            this.addMemberNameTextBox.Size = new System.Drawing.Size(164, 22);
+            this.addMemberNameTextBox.TabIndex = 150;
+            // 
+            // addMemberTypeLabel
+            // 
+            this.addMemberTypeLabel.AutoSize = true;
+            this.addMemberTypeLabel.Location = new System.Drawing.Point(1078, 320);
+            this.addMemberTypeLabel.Name = "addMemberTypeLabel";
+            this.addMemberTypeLabel.Size = new System.Drawing.Size(44, 17);
+            this.addMemberTypeLabel.TabIndex = 149;
+            this.addMemberTypeLabel.Text = "Type:";
+            // 
+            // addMemberDOBLabel
+            // 
+            this.addMemberDOBLabel.AutoSize = true;
+            this.addMemberDOBLabel.Location = new System.Drawing.Point(1080, 268);
+            this.addMemberDOBLabel.Name = "addMemberDOBLabel";
+            this.addMemberDOBLabel.Size = new System.Drawing.Size(42, 17);
+            this.addMemberDOBLabel.TabIndex = 148;
+            this.addMemberDOBLabel.Text = "DOB:";
+            // 
+            // addMemberIDName
+            // 
+            this.addMemberIDName.AutoSize = true;
+            this.addMemberIDName.Location = new System.Drawing.Point(1073, 238);
+            this.addMemberIDName.Name = "addMemberIDName";
+            this.addMemberIDName.Size = new System.Drawing.Size(49, 17);
+            this.addMemberIDName.TabIndex = 147;
+            this.addMemberIDName.Text = "Name:";
+            // 
+            // addMemberDOBFormatLabel
+            // 
+            this.addMemberDOBFormatLabel.AutoSize = true;
+            this.addMemberDOBFormatLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addMemberDOBFormatLabel.Location = new System.Drawing.Point(1045, 255);
+            this.addMemberDOBFormatLabel.Name = "addMemberDOBFormatLabel";
+            this.addMemberDOBFormatLabel.Size = new System.Drawing.Size(75, 13);
+            this.addMemberDOBFormatLabel.TabIndex = 157;
+            this.addMemberDOBFormatLabel.Text = "YYYY-MM-DD";
+            // 
+            // memberTypeNumbersLabel
+            // 
+            this.memberTypeNumbersLabel.AutoSize = true;
+            this.memberTypeNumbersLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.memberTypeNumbersLabel.Location = new System.Drawing.Point(802, 131);
+            this.memberTypeNumbersLabel.Name = "memberTypeNumbersLabel";
+            this.memberTypeNumbersLabel.Size = new System.Drawing.Size(333, 17);
+            this.memberTypeNumbersLabel.TabIndex = 158;
+            this.memberTypeNumbersLabel.Text = "1: Actor | 2: Director | 3: Producer | 4: Photographer";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(1025, 296);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(333, 17);
+            this.label2.TabIndex = 159;
+            this.label2.Text = "1: Actor | 2: Director | 3: Producer | 4: Photographer";
+            // 
+            // memberTypeComboBox
+            // 
+            this.memberTypeComboBox.Enabled = false;
+            this.memberTypeComboBox.FormattingEnabled = true;
+            this.memberTypeComboBox.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4"});
+            this.memberTypeComboBox.Location = new System.Drawing.Point(892, 152);
+            this.memberTypeComboBox.Name = "memberTypeComboBox";
+            this.memberTypeComboBox.Size = new System.Drawing.Size(164, 24);
+            this.memberTypeComboBox.TabIndex = 160;
+            // 
+            // addMemberTypeComboBox
+            // 
+            this.addMemberTypeComboBox.FormattingEnabled = true;
+            this.addMemberTypeComboBox.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4"});
+            this.addMemberTypeComboBox.Location = new System.Drawing.Point(1128, 317);
+            this.addMemberTypeComboBox.Name = "addMemberTypeComboBox";
+            this.addMemberTypeComboBox.Size = new System.Drawing.Size(164, 24);
+            this.addMemberTypeComboBox.TabIndex = 161;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1357, 731);
+            this.Controls.Add(this.addMemberTypeComboBox);
+            this.Controls.Add(this.memberTypeComboBox);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.memberTypeNumbersLabel);
+            this.Controls.Add(this.addMemberDOBFormatLabel);
+            this.Controls.Add(this.addMemberIDTextBox);
+            this.Controls.Add(this.addMemberIDLabel);
+            this.Controls.Add(this.addMemberImagePathTextBox);
+            this.Controls.Add(this.addMemberImagePathLabel);
+            this.Controls.Add(this.addMemberDOBTextBox);
+            this.Controls.Add(this.addMemberNameTextBox);
+            this.Controls.Add(this.addMemberTypeLabel);
+            this.Controls.Add(this.addMemberDOBLabel);
+            this.Controls.Add(this.addMemberIDName);
+            this.Controls.Add(this.memberIDTextBox);
+            this.Controls.Add(this.memberIDLabel);
             this.Controls.Add(this.addMovieGenreComboBox);
             this.Controls.Add(this.resetFilterButton);
             this.Controls.Add(this.genreDescriptionTextBox);
@@ -998,14 +1100,6 @@
             this.Controls.Add(this.addMemberImagePathButton);
             this.Controls.Add(this.memberImagePathButton);
             this.Controls.Add(this.movieImagePathButton);
-            this.Controls.Add(this.addMemberImagePathTextBox);
-            this.Controls.Add(this.addMemberImagePathLabel);
-            this.Controls.Add(this.addMemberTypeTextBox);
-            this.Controls.Add(this.addMemberDOBTextBox);
-            this.Controls.Add(this.addMemberNameTextBox);
-            this.Controls.Add(this.addMemberTypeLabel);
-            this.Controls.Add(this.addMemberDOBLabel);
-            this.Controls.Add(this.addMemberNameLabel);
             this.Controls.Add(this.memberImagePathTextBox);
             this.Controls.Add(this.memberImagePathLabel);
             this.Controls.Add(this.saveMovieButton);
@@ -1029,7 +1123,6 @@
             this.Controls.Add(this.genreCodeTextBox);
             this.Controls.Add(this.genreCodeLabel);
             this.Controls.Add(this.movieLabel);
-            this.Controls.Add(this.memberTypeTextBox);
             this.Controls.Add(this.memberDOBTextBox);
             this.Controls.Add(this.memberNameTextBox);
             this.Controls.Add(this.label9);
@@ -1115,7 +1208,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox memberNameTextBox;
         private System.Windows.Forms.TextBox memberDOBTextBox;
-        private System.Windows.Forms.TextBox memberTypeTextBox;
         private System.Windows.Forms.Label movieLabel;
         private System.Windows.Forms.Label genreLabel;
         private System.Windows.Forms.Label genreDescriptionLabel;
@@ -1139,14 +1231,6 @@
         private System.Windows.Forms.Button saveMovieButton;
         private System.Windows.Forms.TextBox memberImagePathTextBox;
         private System.Windows.Forms.Label memberImagePathLabel;
-        private System.Windows.Forms.TextBox addMemberImagePathTextBox;
-        private System.Windows.Forms.Label addMemberImagePathLabel;
-        private System.Windows.Forms.TextBox addMemberTypeTextBox;
-        private System.Windows.Forms.TextBox addMemberDOBTextBox;
-        private System.Windows.Forms.TextBox addMemberNameTextBox;
-        private System.Windows.Forms.Label addMemberTypeLabel;
-        private System.Windows.Forms.Label addMemberDOBLabel;
-        private System.Windows.Forms.Label addMemberNameLabel;
         private System.Windows.Forms.Button movieImagePathButton;
         private System.Windows.Forms.Button memberImagePathButton;
         private System.Windows.Forms.Button addMemberImagePathButton;
@@ -1171,6 +1255,22 @@
         private System.Windows.Forms.TextBox genreDescriptionTextBox;
         private System.Windows.Forms.Button resetFilterButton;
         private System.Windows.Forms.ComboBox addMovieGenreComboBox;
+        private System.Windows.Forms.TextBox memberIDTextBox;
+        private System.Windows.Forms.Label memberIDLabel;
+        private System.Windows.Forms.TextBox addMemberIDTextBox;
+        private System.Windows.Forms.Label addMemberIDLabel;
+        private System.Windows.Forms.TextBox addMemberImagePathTextBox;
+        private System.Windows.Forms.Label addMemberImagePathLabel;
+        private System.Windows.Forms.TextBox addMemberDOBTextBox;
+        private System.Windows.Forms.TextBox addMemberNameTextBox;
+        private System.Windows.Forms.Label addMemberTypeLabel;
+        private System.Windows.Forms.Label addMemberDOBLabel;
+        private System.Windows.Forms.Label addMemberIDName;
+        private System.Windows.Forms.Label addMemberDOBFormatLabel;
+        private System.Windows.Forms.Label memberTypeNumbersLabel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox memberTypeComboBox;
+        private System.Windows.Forms.ComboBox addMemberTypeComboBox;
     }
 }
 
