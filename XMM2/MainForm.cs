@@ -23,9 +23,9 @@ namespace XMM2
         MySqlConnection dbConnection;
 
         //  Lists for movies genres and members
-        List<Movie> Movies = new List<Movie>();
-        List<Genre> Genres = new List<Genre>();
-        List<Member> Members = new List<Member>();
+        List<Movie> movieList = new List<Movie>();
+        List<Genre> genreList = new List<Genre>();
+        List<Member> memberList = new List<Member>();
 
         public MainForm()
         {
@@ -69,7 +69,7 @@ namespace XMM2
             moviesListView.Items.Clear();
 
             //  Clear movie list
-            Movies.Clear();
+            movieList.Clear();
 
             Movie currentMovie;
 
@@ -111,14 +111,14 @@ namespace XMM2
                     {
                         currentMovie.ImagePath = @"images\noimage.jpg";
                         movieImageList.Images.Add(Image.FromFile(currentMovie.ImagePath.ToString()));
-                        Movies.Add(currentMovie);
+                        movieList.Add(currentMovie);
                     }
 
                     else
                     {
                         currentMovie.ImagePath = dataReader.GetString(5);
                         movieImageList.Images.Add(Image.FromFile(currentMovie.ImagePath.ToString()));
-                        Movies.Add(currentMovie);
+                        movieList.Add(currentMovie);
                     }
 
                     Console.WriteLine("image = " + currentMovie.ImagePath);
@@ -224,13 +224,13 @@ namespace XMM2
 
         private void DisplayMovies()
         {
-            for (int i = 0; i < Movies.Count; i++)
+            for (int i = 0; i < movieList.Count; i++)
             {
                 //  Create LVI and populate ListView
                 ListViewItem lvi = new ListViewItem();
-                lvi.Text = Movies[i].Title;
-                lvi.SubItems.Add(Movies[i].Year.ToString());
-                lvi.SubItems.Add(Movies[i].ID.ToString());
+                lvi.Text = movieList[i].Title;
+                lvi.SubItems.Add(movieList[i].Year.ToString());
+                lvi.SubItems.Add(movieList[i].ID.ToString());
 
                 //  Add object to ListView
                 moviesListView.Items.Add(lvi);
@@ -303,7 +303,7 @@ namespace XMM2
                 Console.WriteLine("Code = " + currentGenre.Code + "\n" + "Name = " + currentGenre.Name);
 
                 //  Add to genre list
-                Genres.Add(currentGenre);
+                genreList.Add(currentGenre);
 
                 //  Add to ComboBox
                 addMovieGenreComboBox.Items.Add(currentGenre.Name);
@@ -320,17 +320,17 @@ namespace XMM2
         private void DisplayGenres()
         {
             //  For each genre in the list, display it in the ListBox
-            for (int i = 0; i < Genres.Count; i++)
+            for (int i = 0; i < genreList.Count; i++)
             {
                 //  Add genre names
-                genreListBox.Items.Add(Genres[i].Name);
+                genreListBox.Items.Add(genreList[i].Name);
             }
         }
 
         private void ReadMembersDB()
         {
             //  Clear members list
-            Members.Clear();
+            memberList.Clear();
 
             Member currentMember;
 
@@ -369,7 +369,7 @@ namespace XMM2
                 Console.WriteLine("Code = " + currentMember.ID + "\n" + "Name = " + currentMember.Name);
 
                 //  Add to members list
-                Members.Add(currentMember);
+                memberList.Add(currentMember);
 
             }
             //  close DB connection
@@ -383,10 +383,10 @@ namespace XMM2
         private void DisplayMembers()
         {
             //  For each member in the list, display it in the ListBox
-            for (int i = 0; i < Members.Count; i++)
+            for (int i = 0; i < memberList.Count; i++)
             {
                 //  Add member names
-                membersListBox.Items.Add(Members[i].Name);
+                membersListBox.Items.Add(memberList[i].Name);
             }
         }
 
@@ -402,9 +402,9 @@ namespace XMM2
             int counter = 0;
 
             //  Loop to read each movie found in the list
-            foreach (Movie movies in Movies)
+            foreach (Movie movies in movieList)
             {
-                if (movieTitle != Movies[counter].Title)
+                if (movieTitle != movieList[counter].Title)
                 {
                     counter++;
                 }
@@ -427,21 +427,21 @@ namespace XMM2
                     string text = moviesListView.Items[intselectedindex].Text;
 
                     //  Associate genre field from selected movie
-                    foreach (Genre genre in Movies[MovieData(text)].Genres)
+                    foreach (Genre genre in movieList[MovieData(text)].Genres)
                     {
                         genreTextBox.Text = genre.Name.ToString();
                     }
 
                     //  Fields to display information by the movie list item via loop method -> title
-                    idTextBox.Text = Movies[MovieData(text)].ID.ToString();
-                    titleTextBox.Text = Movies[MovieData(text)].Title;
-                    yearTextBox.Text = Movies[MovieData(text)].Year.ToString();
-                    lengthTextBox.Text = Movies[MovieData(text)].Length.ToString();
-                    ratingTextBox.Text = Movies[MovieData(text)].Rating.ToString("N2");
-                    imagePathTextBox.Text = Movies[MovieData(text)].ImagePath;
+                    idTextBox.Text = movieList[MovieData(text)].ID.ToString();
+                    titleTextBox.Text = movieList[MovieData(text)].Title;
+                    yearTextBox.Text = movieList[MovieData(text)].Year.ToString();
+                    lengthTextBox.Text = movieList[MovieData(text)].Length.ToString();
+                    ratingTextBox.Text = movieList[MovieData(text)].Rating.ToString("N2");
+                    imagePathTextBox.Text = movieList[MovieData(text)].ImagePath;
 
                     //  Find image index for movieList to affiliate the correct image with the selected movie
-                    int imageIndex = Movies.FindIndex(a => a.Title == text);
+                    int imageIndex = movieList.FindIndex(a => a.Title == text);
                     moviePictureBox.Image = movieImageList.Images[imageIndex];
                 }
             }
@@ -467,7 +467,7 @@ namespace XMM2
                 if (membersListBox.SelectedIndex != -1)
                 {
                     //  Selected items for the lists
-                    checkMember = (Member)Members[selected];
+                    checkMember = (Member)memberList[selected];
 
                     //  TextBoxes to display information requested
                     memberIDTextBox.Text = checkMember.ID.ToString();
@@ -514,7 +514,7 @@ namespace XMM2
                     String text = membersListBox.Items[selectedindex].ToString();
 
                     //  Find image index for member to affiliate the correct image with the selected member
-                    int index = Members.FindIndex(a => a.Name == text);
+                    int index = memberList.FindIndex(a => a.Name == text);
 
                     try
                     {
@@ -599,7 +599,7 @@ namespace XMM2
             newMovie.ImagePath = addMovieImagePathTextBox.Text;
 
             //  Empty Movies list
-            Movies = new List<Movie>();
+            movieList = new List<Movie>();
 
             //  Call method to insert add movie fields from form to a movie object in the list
             InsertDBMovie(newMovie);
@@ -670,7 +670,7 @@ namespace XMM2
             FormatListView();
 
             //  Counting all genres that exist in the list
-            foreach (Genre currentGenre in Genres)
+            foreach (Genre currentGenre in genreList)
             {
                 //  Show information corresponding to the selected ListBox item
                 if (genreListBox.SelectedItem.ToString() == currentGenre.Name)
@@ -684,7 +684,7 @@ namespace XMM2
             }
 
             //  Each movie which has a genre
-            foreach (Movie currentMovie in Movies)
+            foreach (Movie currentMovie in movieList)
             {
                 foreach (Genre currentGenre in currentMovie.Genres)
                 {
@@ -709,13 +709,13 @@ namespace XMM2
             moviesListView.Items.Clear();
 
             //  For each item name add it to the ListView
-            for (int i = 0; i < Movies.Count; i++)
+            for (int i = 0; i < movieList.Count; i++)
             {
                 //  Create ListViewItem to hold the title and year for each movie
                 ListViewItem lvi = new ListViewItem();
-                lvi.Text = Movies[i].Title;
-                lvi.SubItems.Add(Movies[i].Year.ToString());
-                lvi.SubItems.Add(Movies[i].ID.ToString());
+                lvi.Text = movieList[i].Title;
+                lvi.SubItems.Add(movieList[i].Year.ToString());
+                lvi.SubItems.Add(movieList[i].ID.ToString());
 
                 //  Populate ListView with created LVI item
                 moviesListView.Items.Add(lvi);
@@ -733,7 +733,7 @@ namespace XMM2
                     string replacement = Regex.Replace(text, @"\t|\n|\r", "");
 
                     //  Find image index for Movies list to affiliate the correct image with the selected movie
-                    int imageIndex = Movies.FindIndex(a => a.Title == replacement);
+                    int imageIndex = movieList.FindIndex(a => a.Title == replacement);
                     moviePictureBox.Image = movieImageList.Images[imageIndex];
                 }
             }
@@ -744,9 +744,9 @@ namespace XMM2
             //  Clear ListBox
             membersListBox.Items.Clear();
             //  For each item name add it to the ListView
-            for (int i = 0; i < Members.Count; i++)
+            for (int i = 0; i < memberList.Count; i++)
             {
-                membersListBox.Items.Add(Members[i].Name);
+                membersListBox.Items.Add(memberList[i].Name);
             }
         }
         private void ClearMovieInputs()
@@ -843,7 +843,7 @@ namespace XMM2
 
 
             //  Empty Members list
-            Members = new List<Member>();
+            memberList = new List<Member>();
 
             //  Call method to insert add member fields from form to a member object in the list
             InsertDBMember(newMember);
@@ -974,7 +974,7 @@ namespace XMM2
             deleteMember.ID = int.Parse(memberIDTextBox.Text);
 
             //  Empty Members list
-            Members = new List<Member>();
+            memberList = new List<Member>();
 
             //  Call method to delete member from the list according to the member fields read
             DeleteDBMember(deleteMember);
@@ -1055,7 +1055,7 @@ namespace XMM2
                 modifyMember.ImagePath = memberImagePathTextBox.Text;
 
                 //  Empty Members list
-                Members = new List<Member>();
+                memberList = new List<Member>();
 
                 //  Call method to modify and update member from the list
                 ModifyDBMember(modifyMember);
