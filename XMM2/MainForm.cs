@@ -104,7 +104,10 @@ namespace XMM2
                     currentMovie.Rating = dataReader.GetDouble(4);
 
                     //  Load all genres associated with the movie
-                    currentMovie.Genres = LoadMovieGenres(currentMovie.ID);
+                    currentMovie.Genres = ReadDBGenres(currentMovie.ID);
+
+                    //  Load all members associated with the movie
+                    currentMovie.Members = ReadDBMembers(currentMovie.ID);
 
                     //  If the image path is empty, declare string to make instance not null
                     if (dataReader.GetString(5) == "")
@@ -125,9 +128,6 @@ namespace XMM2
 
 
                     Console.WriteLine("Title = " + currentMovie.Title);
-
-                    //  Movies.Add(currentMovie);
-
                 }
             }
             //  Error checking
@@ -143,21 +143,22 @@ namespace XMM2
             DisplayMovies();
         }
 
-        private List<Genre> LoadMovieGenres(int movieID)
+        private List<Genre> ReadDBGenres(int movieID)
         {
             //  The following objects will be used to access the jt_genre_movie table
             MySqlConnection dbConnection2 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
             MySqlCommand dbCommand2;
             MySqlDataReader dataReader2;
 
-            //The following objects will be used to access the genre table
+            //  The following objects will be used to access the genre table
             MySqlConnection dbConnection3 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
             MySqlCommand dbCommand3;
             MySqlDataReader dataReader3;
 
-
+            //  String for genre code
             string existingGenreCode;
 
+            //  Declare genre variable
             Genre existingGenre;
 
             //  Declare genre list
@@ -177,11 +178,13 @@ namespace XMM2
             //  Execute SQL query
             dataReader2 = dbCommand2.ExecuteReader();
 
-            //  While there are genre_codes in dataReader2
+            //  While there are genre codes
             while (dataReader2.Read())
             {
+                //  Declare genre variable
                 existingGenre = new Genre();
 
+                //  Read genre code value
                 existingGenreCode = dataReader2.GetString(0);
 
                 //  Open a connection to access the genre table
@@ -192,13 +195,13 @@ namespace XMM2
 
                 Console.WriteLine("sqlQuery = " + sqlQuery);
 
-                //  Pair query with db connection
+                //  Pair query with DB connection
                 dbCommand3 = new MySqlCommand(sqlQuery, dbConnection3);
 
                 //  Execute SQL query
                 dataReader3 = dbCommand3.ExecuteReader();
 
-                //  Read a line from the genre table
+                //  Read a line from genre table
                 dataReader3.Read();
 
                 //  Associate read genre objects with the data reader
@@ -221,7 +224,80 @@ namespace XMM2
             return GenreList;
         }
 
+        private List<Member> ReadDBMembers(int movieID)
+        {
+            //  The following objects will be used to access the jt_genre_movie table
+            MySqlConnection dbConnection8 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+            MySqlCommand dbCommand8;
+            MySqlDataReader dataReader8;
 
+            //  The following objects will be used to access the genre table
+            MySqlConnection dbConnection9 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+            MySqlCommand dbCommand9;
+            MySqlDataReader dataReader9;
+
+            //  Declare int variable for the current member ID
+            int loadMemberID;
+
+            //  Declare member variable
+            Member loadMember;
+
+            //  Declare new list for members
+            List<Member> loadMemberList = new List<Member>();
+
+            //  Open DB connection
+            dbConnection8.Open();
+
+            //  SQL query checking
+            string sqlQuery = "SELECT member_id FROM jt_movie_member WHERE movie_id = " + movieID + ";";
+
+            //  Pair query with DB connection
+            dbCommand8 = new MySqlCommand(sqlQuery, dbConnection8);
+
+            //  Execute SQL query
+            dataReader8 = dbCommand8.ExecuteReader();
+
+            //  While there are member codes
+            while (dataReader8.Read())
+            {
+                //  Declare movie variable
+                loadMember = new Member();
+
+                //  Read member ID value
+                loadMemberID = dataReader8.GetInt32(0);
+
+                //  Open DB connection
+                dbConnection9.Open();
+
+                //  SQL query checking
+                sqlQuery = "SELECT * FROM member WHERE id = '" + loadMemberID + "';";
+
+                //  Pair query with DB connection
+                dbCommand9 = new MySqlCommand(sqlQuery, dbConnection9);
+
+                //  Execute SQL query
+                dataReader9 = dbCommand9.ExecuteReader();
+
+                //  Read a line from member table
+                dataReader9.Read();
+
+                //  Associate read member objects with the data reader
+                loadMember.ID = dataReader9.GetInt32(0);
+                loadMember.Name = dataReader9.GetString(1);
+                loadMember.DOB = dataReader9.GetDateTime(2);
+                loadMember.Type = dataReader9.GetInt32(3);
+
+                //  Add to the member list
+                loadMemberList.Add(loadMember);
+
+                //  Close DB connection
+                dbConnection9.Close();
+            }
+            //  Close DB connection
+            dbConnection9.Close();
+
+            return loadMemberList;
+        }
         private void DisplayMovies()
         {
             for (int i = 0; i < movieList.Count; i++)
@@ -443,6 +519,13 @@ namespace XMM2
                     //  Find image index for movieList to affiliate the correct image with the selected movie
                     int imageIndex = movieList.FindIndex(a => a.Title == text);
                     moviePictureBox.Image = movieImageList.Images[imageIndex];
+
+                    membersListBox.Items.Clear();
+
+                    foreach (Member member in movieList[MovieData(text)].Members)
+                    {
+                        membersListBox.Items.Add(member.Name);
+                    }
                 }
             }
 
@@ -477,6 +560,31 @@ namespace XMM2
                     memberDOBTextBox.Text = Convert.ToDateTime(checkMember.DOB).ToString("yyyy-MM-dd");
                     memberImagePathTextBox.Text = checkMember.ImagePath;
                     memberTypeComboBox.Text = checkMember.Type.ToString();
+
+                    //  Clear ListView
+                    moviesListView.Clear();
+
+                    //  Method to format the ListView
+                    FormatListView();
+
+                    //  When a member is selected, it shows the movies they are in with the movie ListView
+                    foreach (Movie currentMovie in movieList)
+                    {
+                        foreach (Member currentMember in currentMovie.Members)
+                        {
+                            if (membersListBox.SelectedItem.ToString() == currentMember.Name)
+                            {
+                                //  Create LVI and populate ListView under the correct genre chosen from genreListBox
+                                ListViewItem lvi = new ListViewItem();
+                                lvi.Text = currentMovie.Title;
+                                lvi.SubItems.Add(currentMovie.Year.ToString());
+                                lvi.SubItems.Add(currentMovie.ID.ToString());
+
+                                //  Add object to ListView
+                                moviesListView.Items.Add(lvi);
+                            }
+                        }
+                    }
                     /*
                     //  Check assigned integer for each member type and display correct string
                     if (checkMember.Type == 1)
@@ -1078,6 +1186,21 @@ namespace XMM2
                 memberTypeComboBox.Enabled = false;
                 memberImagePathButton.Enabled = false;
             }
+        }
+
+        private void ResetMemberMovieButton_Click(object sender, EventArgs e)
+        {
+            //  Remove movie data method
+            ClearMovieInputs();
+
+            //  Remove member data method
+            ClearMemberInputs();
+
+            //  Method to refresh the ListView data
+            UpdateListView();
+
+            //  Method to refresh the ListBox data
+            UpdateMemberListBox();
         }
     }
 }

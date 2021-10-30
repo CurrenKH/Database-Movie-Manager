@@ -128,6 +128,7 @@
             this.memberTypeComboBox = new System.Windows.Forms.ComboBox();
             this.addMemberTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.resetMemberMovieButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.moviePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -1072,11 +1073,22 @@
             this.label3.TabIndex = 162;
             this.label3.Text = "YYYY-MM-DD";
             // 
+            // resetMemberMovieButton
+            // 
+            this.resetMemberMovieButton.Location = new System.Drawing.Point(883, 381);
+            this.resetMemberMovieButton.Name = "resetMemberMovieButton";
+            this.resetMemberMovieButton.Size = new System.Drawing.Size(137, 29);
+            this.resetMemberMovieButton.TabIndex = 163;
+            this.resetMemberMovieButton.Text = "Reset Filters";
+            this.resetMemberMovieButton.UseVisualStyleBackColor = true;
+            this.resetMemberMovieButton.Click += new System.EventHandler(this.ResetMemberMovieButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1357, 731);
+            this.Controls.Add(this.resetMemberMovieButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.addMemberTypeComboBox);
             this.Controls.Add(this.memberTypeComboBox);
@@ -1290,6 +1302,7 @@
         private System.Windows.Forms.ComboBox memberTypeComboBox;
         private System.Windows.Forms.ComboBox addMemberTypeComboBox;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button resetMemberMovieButton;
     }
 }
 
