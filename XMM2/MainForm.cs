@@ -519,13 +519,6 @@ namespace XMM2
                     //  Find image index for movieList to affiliate the correct image with the selected movie
                     int imageIndex = movieList.FindIndex(a => a.Title == text);
                     moviePictureBox.Image = movieImageList.Images[imageIndex];
-
-                    membersListBox.Items.Clear();
-
-                    foreach (Member member in movieList[MovieData(text)].Members)
-                    {
-                        membersListBox.Items.Add(member.Name);
-                    }
                 }
             }
 
@@ -837,11 +830,8 @@ namespace XMM2
                     //  String selected ListView item (movie title) as text
                     String text = moviesListView.Items[intselectedindex].Text;
 
-                    //  String variable for Regex argument (input, pattern, replacement string data)
-                    string replacement = Regex.Replace(text, @"\t|\n|\r", "");
-
                     //  Find image index for Movies list to affiliate the correct image with the selected movie
-                    int imageIndex = movieList.FindIndex(a => a.Title == replacement);
+                    int imageIndex = movieList.FindIndex(a => a.Title == text);
                     moviePictureBox.Image = movieImageList.Images[imageIndex];
                 }
             }
@@ -1198,7 +1188,7 @@ namespace XMM2
 
             //  Method to refresh the ListView data
             UpdateListView();
-
+            
             //  Method to refresh the ListBox data
             UpdateMemberListBox();
         }
