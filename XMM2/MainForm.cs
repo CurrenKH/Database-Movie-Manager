@@ -897,9 +897,6 @@ namespace XMM2
 
             //  Method to refresh the ListView data
             UpdateListView();
-
-            //  Remove selected item to prevent the risk of the program crashing
-            genreListBox.ClearSelected();
         }
 
         private void AddMovieImagePathButton_Click(object sender, EventArgs e)
