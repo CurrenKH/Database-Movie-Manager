@@ -599,12 +599,6 @@ namespace XMM2
                     */
                 }
 
-                //  If there is no selected item in the ListBox
-                if (membersListBox.SelectedIndices.Count <= 0)
-                {
-                    return;
-                }
-
                 //  Declare int variable for the selected indice (#0) in the ListBox
                 int selectedindex = membersListBox.SelectedIndices[0];
 
@@ -903,6 +897,9 @@ namespace XMM2
 
             //  Method to refresh the ListView data
             UpdateListView();
+
+            //  Remove selected item to prevent the risk of the program crashing
+            genreListBox.ClearSelected();
         }
 
         private void AddMovieImagePathButton_Click(object sender, EventArgs e)
@@ -1065,29 +1062,38 @@ namespace XMM2
         }
         private void DeleteMemberButton_Click(object sender, EventArgs e)
         {
-            //  Declare member variable
-            Member deleteMember = new Member();
+            //  Check if a member was selected
+            if (membersListBox.SelectedIndex == -1)
+            {
+                //  Error message
+                MessageBox.Show("You must select a member to delete.");
+            }
+            else
+            {
+                //  Declare member variable
+                Member deleteMember = new Member();
 
-            //  Selected member data values pointed to the read only member ID field
-            deleteMember.ID = int.Parse(memberIDTextBox.Text);
+                //  Selected member data values pointed to the read only member ID field
+                deleteMember.ID = int.Parse(memberIDTextBox.Text);
 
-            //  Empty Members list
-            memberList = new List<Member>();
+                //  Empty Members list
+                memberList = new List<Member>();
 
-            //  Call method to delete member from the list according to the member fields read
-            DeleteDBMember(deleteMember);
+                //  Call method to delete member from the list according to the member fields read
+                DeleteDBMember(deleteMember);
 
-            //  Clear imageList for adding member item
-            membersImageList.Images.Clear();
+                //  Clear imageList for adding member item
+                membersImageList.Images.Clear();
 
-            //  Read members from the database
-            ReadMembersDB();
+                //  Read members from the database
+                ReadMembersDB();
 
-            //  Read member list and display updated data
-            UpdateMemberListBox();
+                //  Read member list and display updated data
+                UpdateMemberListBox();
 
-            //  Method to clear member TextBox/ComboBox/pictureBox data
-            ClearMemberInputs();
+                //  Method to clear member TextBox/ComboBox/pictureBox data
+                ClearMemberInputs();
+            }
         }
 
         private void ModifyMemberButton_Click(object sender, EventArgs e)
@@ -1188,9 +1194,77 @@ namespace XMM2
 
             //  Method to refresh the ListView data
             UpdateListView();
-            
-            //  Method to refresh the ListBox data
-            UpdateMemberListBox();
+
+            //  Remove selected item to prevent program crashing when selecting member, resetting filter then trying to delete member
+            membersListBox.ClearSelected();
+        }
+        private int DeleteDBMovie(Movie deleteMovie)
+        {
+            try
+            {
+                //  The following objects will be used to delete a movie item in the movie table and its reference from the join table (for the genre)
+                MySqlConnection dbConnection10 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+                MySqlCommand dbCommand10;
+
+                //  Declare int variable for rows affected upon changes
+                int queryResult;
+
+                //  Open database connection
+                dbConnection10.Open();
+
+                //  SQL query to execute in the db
+                string sqlQuery = "DELETE FROM jt_genre_movie WHERE movie_id = '" + deleteMovie.ID + "';" + "DELETE FROM movie WHERE id = '" + deleteMovie.ID + "';";
+
+                //  SQL containing the query to be executed
+                dbCommand10 = new MySqlCommand(sqlQuery, dbConnection10);
+
+                //  Result of rows affected
+                queryResult = dbCommand10.ExecuteNonQuery();
+
+                // Close DB connection
+                dbConnection10.Close();
+
+                return queryResult;
+
+            }
+            catch
+            {
+                MessageBox.Show("Error upon movie deletion detected.");
+
+                //  Open and close connection upon an error
+                MySqlConnection dbConnection10 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+
+                //  Close DB connection
+                dbConnection10.Close();
+
+                return 0;
+            }
+        }
+        private void DeleteMovieButton_Click(object sender, EventArgs e)
+        {
+            //  Declare movie variable
+            Movie deleteMovie = new Movie();
+
+            //  Selected movie data values pointed to the read only movie ID field
+            deleteMovie.ID = int.Parse(idTextBox.Text);
+
+            //  Empty Movies list
+            movieList = new List<Movie>();
+
+            //  Call method to insert add movie fields from form to a movie object in the list
+            DeleteDBMovie(deleteMovie);
+
+            //  Clear imageList for adding movie item
+            movieImageList.Images.Clear();
+
+            //  Read movies from the database
+            ReadMoviesDB();
+
+            //  Read movie list and display updated data
+            UpdateListView();
+
+            //  Remove movie data method
+            ClearMovieInputs();
         }
     }
 }
