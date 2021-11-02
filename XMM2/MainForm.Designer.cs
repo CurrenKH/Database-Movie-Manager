@@ -903,6 +903,7 @@
             // 
             // addMovieGenreComboBox
             // 
+            this.addMovieGenreComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.addMovieGenreComboBox.FormattingEnabled = true;
             this.addMovieGenreComboBox.Location = new System.Drawing.Point(857, 523);
             this.addMovieGenreComboBox.Name = "addMovieGenreComboBox";

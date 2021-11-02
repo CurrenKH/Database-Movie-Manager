@@ -33,7 +33,7 @@ namespace XMM2
 
 
             //             == FORMAT ==
-            // ( host_name, username, password, db_name )
+            //  ( host_name, username, password, db_name )
             //  This method sets up a connection to a MySQL database
             SetDBConnection("127.0.0.1", "CurrenH", "dfcg22r", "oop");
             // =======================================================
@@ -71,6 +71,7 @@ namespace XMM2
             //  Clear movie list
             movieList.Clear();
 
+            //  Declare movie variable
             Movie currentMovie;
 
             //  Connect to the database
