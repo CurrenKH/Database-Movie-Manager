@@ -129,15 +129,20 @@
             this.label3 = new System.Windows.Forms.Label();
             this.resetMemberMovieButton = new System.Windows.Forms.Button();
             this.genreComboBox = new System.Windows.Forms.ComboBox();
+            this.movieSearchTextBox = new System.Windows.Forms.TextBox();
+            this.movieSearchLabel = new System.Windows.Forms.Label();
+            this.resetMovieSearchButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.moviePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // moviesListView
             // 
+            this.moviesListView.FullRowSelect = true;
             this.moviesListView.HideSelection = false;
             this.moviesListView.Location = new System.Drawing.Point(12, 43);
             this.moviesListView.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.moviesListView.MultiSelect = false;
             this.moviesListView.Name = "moviesListView";
             this.moviesListView.Size = new System.Drawing.Size(441, 313);
             this.moviesListView.TabIndex = 0;
@@ -471,11 +476,11 @@
             // genreLabel
             // 
             this.genreLabel.AutoSize = true;
-            this.genreLabel.Location = new System.Drawing.Point(233, 439);
+            this.genreLabel.Location = new System.Drawing.Point(236, 439);
             this.genreLabel.Name = "genreLabel";
-            this.genreLabel.Size = new System.Drawing.Size(52, 17);
+            this.genreLabel.Size = new System.Drawing.Size(49, 17);
             this.genreLabel.TabIndex = 83;
-            this.genreLabel.Text = "Genre:";
+            this.genreLabel.Text = "Name:";
             // 
             // genreDescriptionLabel
             // 
@@ -889,11 +894,11 @@
             // 
             // resetFilterButton
             // 
-            this.resetFilterButton.Location = new System.Drawing.Point(59, 499);
+            this.resetFilterButton.Location = new System.Drawing.Point(43, 499);
             this.resetFilterButton.Name = "resetFilterButton";
-            this.resetFilterButton.Size = new System.Drawing.Size(137, 37);
+            this.resetFilterButton.Size = new System.Drawing.Size(176, 37);
             this.resetFilterButton.TabIndex = 143;
-            this.resetFilterButton.Text = "Reset Filter";
+            this.resetFilterButton.Text = "Reset Genre/Movie Filter";
             this.resetFilterButton.UseVisualStyleBackColor = true;
             this.resetFilterButton.Click += new System.EventHandler(this.ResetFilterButton_Click_1);
             // 
@@ -1091,11 +1096,44 @@
             this.genreComboBox.Size = new System.Drawing.Size(134, 24);
             this.genreComboBox.TabIndex = 164;
             // 
+            // movieSearchTextBox
+            // 
+            this.movieSearchTextBox.Location = new System.Drawing.Point(1028, 460);
+            this.movieSearchTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.movieSearchTextBox.Name = "movieSearchTextBox";
+            this.movieSearchTextBox.Size = new System.Drawing.Size(197, 22);
+            this.movieSearchTextBox.TabIndex = 165;
+            this.movieSearchTextBox.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
+            // 
+            // movieSearchLabel
+            // 
+            this.movieSearchLabel.AutoSize = true;
+            this.movieSearchLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.movieSearchLabel.Location = new System.Drawing.Point(1024, 438);
+            this.movieSearchLabel.Name = "movieSearchLabel";
+            this.movieSearchLabel.Size = new System.Drawing.Size(129, 20);
+            this.movieSearchLabel.TabIndex = 166;
+            this.movieSearchLabel.Text = "Movie Search:";
+            // 
+            // resetMovieSearchButton
+            // 
+            this.resetMovieSearchButton.Location = new System.Drawing.Point(1231, 450);
+            this.resetMovieSearchButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.resetMovieSearchButton.Name = "resetMovieSearchButton";
+            this.resetMovieSearchButton.Size = new System.Drawing.Size(127, 44);
+            this.resetMovieSearchButton.TabIndex = 167;
+            this.resetMovieSearchButton.Text = "Reset Search";
+            this.resetMovieSearchButton.UseVisualStyleBackColor = true;
+            this.resetMovieSearchButton.Click += new System.EventHandler(this.ResetMovieSearchButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1357, 731);
+            this.Controls.Add(this.resetMovieSearchButton);
+            this.Controls.Add(this.movieSearchLabel);
+            this.Controls.Add(this.movieSearchTextBox);
             this.Controls.Add(this.genreComboBox);
             this.Controls.Add(this.resetMemberMovieButton);
             this.Controls.Add(this.label3);
@@ -1311,6 +1349,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button resetMemberMovieButton;
         private System.Windows.Forms.ComboBox genreComboBox;
+        private System.Windows.Forms.TextBox movieSearchTextBox;
+        private System.Windows.Forms.Label movieSearchLabel;
+        private System.Windows.Forms.Button resetMovieSearchButton;
     }
 }
 

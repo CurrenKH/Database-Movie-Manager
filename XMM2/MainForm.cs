@@ -486,10 +486,10 @@ namespace XMM2
         {
             try
             {
-
                 //  If an item is selected
                 if (moviesListView.SelectedItems.Count > 0)
                 {
+
                     //  Set int variable to selected ListView item in array (#0)
                     int intselectedindex = moviesListView.SelectedIndices[0];
 
@@ -704,6 +704,12 @@ namespace XMM2
 
             //  Method to clear add movie TextBox/ComboBox data
             ClearAddMovieInputs();
+
+            //  Loop to repopulate genreComboBox after a clear data method is used
+            for (int i = 0; i < genreList.Count; i++)
+            {
+                addMovieGenreComboBox.Items.Add(genreList[i].Name);
+            }
         }
         private int InsertDBMember(Member newMember)
         {
@@ -846,6 +852,9 @@ namespace XMM2
             ratingTextBox.Text = "";
             imagePathTextBox.Text = "";
 
+            //  Clear ComboBox
+            genreComboBox.Items.Clear();
+
             //  Clear pictureBox
             moviePictureBox.Image = null;
         }
@@ -860,6 +869,9 @@ namespace XMM2
             addMovieLengthTextBox.Text = "";
             addMovieRatingTextBox.Text = "";
             addMovieImagePathTextBox.Text = "";
+
+            //  Clear ComboBox
+            addMovieGenreComboBox.Items.Clear();
         }
         private void ClearAddMemberInputs()
         {
@@ -869,6 +881,9 @@ namespace XMM2
             addMemberDOBTextBox.Text = "";
             addMemberTypeComboBox.Text = "";
             addMemberImagePathTextBox.Text = "";
+
+            //  Clear ComboBox
+            addMemberTypeComboBox.Items.Clear();
         }
 
         private void ClearMemberInputs()
@@ -880,8 +895,37 @@ namespace XMM2
             memberTypeComboBox.Text = "";
             memberImagePathTextBox.Text = "";
 
+            //  Clear ComboBox
+            memberTypeComboBox.Items.Clear();
+
             //  Clear pictureBox
             memberPictureBox.Image = null;
+        }
+
+        private void ClearGenreInputs()
+        {
+            //  Clear TextBoxes
+            genreCodeTextBox.Text = "";
+            genreNameTextBox.Text = "";
+            genreDescriptionTextBox.Text = "";
+        }
+
+        private void ReadGenresComboBox()
+        {
+            //  Loop to repopulate genreComboBox after a clear data method is used
+            for (int i = 0; i < genreList.Count; i++)
+            {
+                genreComboBox.Items.Add(genreList[i].Name);
+            }
+        }
+
+        private void ReadMemberTypesComboBox()
+        {
+            //  Repopulate ComboBox
+            memberTypeComboBox.Items.Add("1");
+            memberTypeComboBox.Items.Add("2");
+            memberTypeComboBox.Items.Add("3");
+            memberTypeComboBox.Items.Add("4");
         }
 
         private void ResetFilterButton_Click_1(object sender, EventArgs e)
@@ -889,8 +933,14 @@ namespace XMM2
             //  Remove movie data method
             ClearMovieInputs();
 
+            //  Remove genre data method
+            ClearGenreInputs();
+
             //  Method to refresh the ListView data
             UpdateListView();
+
+            //  Read genres method
+            ReadGenresComboBox();
         }
 
         private void AddMovieImagePathButton_Click(object sender, EventArgs e)
@@ -945,6 +995,12 @@ namespace XMM2
 
             //  Method to clear add member TextBox/ComboBox data
             ClearAddMemberInputs();
+
+            //  Repopulate ComboBox
+            addMemberTypeComboBox.Items.Add("1");
+            addMemberTypeComboBox.Items.Add("2");
+            addMemberTypeComboBox.Items.Add("3");
+            addMemberTypeComboBox.Items.Add("4");
         }
 
         private int ModifyDBMember(Member modifyMember)
@@ -1084,6 +1140,9 @@ namespace XMM2
 
                 //  Method to clear member TextBox/ComboBox/pictureBox data
                 ClearMemberInputs();
+
+                //  Read member types method
+                ReadMemberTypesComboBox();
             }
         }
 
@@ -1171,6 +1230,9 @@ namespace XMM2
                 //  Method to refresh the ListView data
                 UpdateListView();
 
+                //  Read member types method
+                ReadMemberTypesComboBox();
+
                 //  Disable TextBoxes and Buttons to deny access for anymore changes made by the user
                 memberNameTextBox.Enabled = false;
                 memberDOBTextBox.Enabled = false;
@@ -1191,9 +1253,16 @@ namespace XMM2
             //  Method to refresh the ListView data
             UpdateListView();
 
+            //  Read genres method
+            ReadGenresComboBox();
+
+            //  Read member types method
+            ReadMemberTypesComboBox();
+
             //  Remove selected item to prevent program crashing when selecting member, resetting filter then trying to delete member
             membersListBox.ClearSelected();
         }
+
         private int DeleteDBMovie(Movie deleteMovie)
         {
             try
@@ -1264,6 +1333,9 @@ namespace XMM2
 
                 //  Remove movie data method
                 ClearMovieInputs();
+
+                //  Read genres method
+                ReadGenresComboBox();
             }
             else
             {
@@ -1364,14 +1436,69 @@ namespace XMM2
             //  Remove movie data method
             ClearMovieInputs();
 
+            //  Read genres method
+            ReadGenresComboBox();
+
             //  Disable TextBoxes and Buttons to deny access for anymore changes made by the user
             titleTextBox.Enabled = false;
             yearTextBox.Enabled = false;
             genreComboBox.Enabled = false;
-            memberImagePathButton.Enabled = false;
+            movieImagePathButton.Enabled = false;
             lengthTextBox.Enabled = false;
             ratingTextBox.Enabled = false;
             saveMovieButton.Enabled = false;
+        }
+
+        private void TextBox1_TextChanged(object sender, EventArgs e)
+        {
+            //  Search function for movie titles
+            //  Source: https://stackoverflow.com/questions/20341113/search-listview-items-using-textbox
+            if (movieSearchTextBox.Text != "")
+            {
+                for (int i = moviesListView.Items.Count - 1; i >= 0; i--)
+                {
+                    var item = moviesListView.Items[i];
+                    if (item.Text.ToLower().Contains(movieSearchTextBox.Text.ToLower()))
+                    {
+                        //  item.BackColor = SystemColors.Highlight;
+                        //  item.ForeColor = SystemColors.HighlightText;
+                    }
+                    else
+                    {
+                        moviesListView.Items.Remove(item);
+                    }
+                }
+                if (moviesListView.SelectedItems.Count == 1)
+                {
+                    moviesListView.Focus();
+                }
+
+            }
+            else
+            {
+                //  If the TextBox is empty revert ListView to default
+                UpdateListView();
+
+                //  Remove movie data method
+                ClearMovieInputs();
+            }
+        }
+
+        private void ResetMovieSearchButton_Click(object sender, EventArgs e)
+        {
+            movieSearchTextBox.Text = "";
+
+            //  If the TextBox is empty revert ListView to default
+            UpdateListView();
+
+            //  Remove movie data method
+            ClearMovieInputs();
+
+            //  Read genres method
+            ReadGenresComboBox();
+
+            //  Read member types method
+            ReadMemberTypesComboBox();
         }
     }
 }
