@@ -333,14 +333,6 @@ namespace XMM2
             idColumn.Text = "ID";
             idColumn.Width = 80;
             moviesListView.Columns.Add(idColumn);
-
-            //  Disable TextBoxes to be made read only and not modifiable
-            titleTextBox.Enabled = false;
-            yearTextBox.Enabled = false;
-            lengthTextBox.Enabled = false;
-            genreTextBox.Enabled = false;
-            imagePathTextBox.Enabled = false;
-            ratingTextBox.Enabled = false;
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -382,8 +374,9 @@ namespace XMM2
                 //  Add to genre list
                 genreList.Add(currentGenre);
 
-                //  Add to ComboBox
+                //  Add to ComboBoxes
                 addMovieGenreComboBox.Items.Add(currentGenre.Name);
+                genreComboBox.Items.Add(currentGenre.Name);
             }
 
             //  Close DB connection
@@ -506,7 +499,7 @@ namespace XMM2
                     //  Associate genre field from selected movie
                     foreach (Genre genre in movieList[MovieData(text)].Genres)
                     {
-                        genreTextBox.Text = genre.Name.ToString();
+                        genreComboBox.Text = genre.Name.ToString();
                     }
 
                     //  Fields to display information by the movie list item via loop method -> title
@@ -847,7 +840,7 @@ namespace XMM2
             // Clear TextBoxes
             idTextBox.Text = "";
             titleTextBox.Text = "";
-            genreTextBox.Text = "";
+            genreComboBox.Text = "";
             yearTextBox.Text = "";
             lengthTextBox.Text = "";
             ratingTextBox.Text = "";
@@ -1110,6 +1103,7 @@ namespace XMM2
                 memberDOBTextBox.Enabled = true;
                 memberTypeComboBox.Enabled = true;
                 memberImagePathButton.Enabled = true;
+                saveMemberButton.Enabled = true;
             }
         }
 
@@ -1148,7 +1142,7 @@ namespace XMM2
                 //  Declare member variable
                 Member modifyMember = new Member();
 
-                //  Modified member data values pointed to the add member fields
+                //  Modified member data values pointed to the modify member fields
                 //  ID is not able to be changed due to it being the primary key
                 modifyMember.ID = int.Parse(memberIDTextBox.Text);
                 modifyMember.Name = memberNameTextBox.Text;
@@ -1174,11 +1168,15 @@ namespace XMM2
                 //  Method to clear member TextBox/ComboBox/pictureBox data
                 ClearMemberInputs();
 
-                //  Disable TextBoxes and Button to deny access for anymore changes made by the user
+                //  Method to refresh the ListView data
+                UpdateListView();
+
+                //  Disable TextBoxes and Buttons to deny access for anymore changes made by the user
                 memberNameTextBox.Enabled = false;
                 memberDOBTextBox.Enabled = false;
                 memberTypeComboBox.Enabled = false;
                 memberImagePathButton.Enabled = false;
+                saveMemberButton.Enabled = false;
             }
         }
 
@@ -1240,17 +1238,119 @@ namespace XMM2
         }
         private void DeleteMovieButton_Click(object sender, EventArgs e)
         {
-            //  Declare movie variable
-            Movie deleteMovie = new Movie();
+            //  If a ListView item is selected
+            if (moviesListView.SelectedItems.Count > 0)
+            {
+                //  Declare movie variable
+                Movie deleteMovie = new Movie();
 
-            //  Selected movie data values pointed to the read only movie ID field
-            deleteMovie.ID = int.Parse(idTextBox.Text);
+                //  Selected movie data values pointed to the read only movie ID field
+                deleteMovie.ID = int.Parse(idTextBox.Text);
+
+                //  Empty Movies list
+                movieList = new List<Movie>();
+
+                //  Call method to insert add movie fields from form to a movie object in the list
+                DeleteDBMovie(deleteMovie);
+
+                //  Clear imageList for adding movie item
+                movieImageList.Images.Clear();
+
+                //  Read movies from the database
+                ReadMoviesDB();
+
+                //  Read movie list and display updated data
+                UpdateListView();
+
+                //  Remove movie data method
+                ClearMovieInputs();
+            }
+            else
+            {
+                //  Show prompt message
+                MessageBox.Show("Select a movie first.");
+            }
+        }
+
+        private void ModifyMovieButton_Click(object sender, EventArgs e)
+        {
+            //  If a ListView item is selected
+            if (moviesListView.SelectedItems.Count > 0)
+            {
+                //  Enable TextBoxes and Button to allow access for changes made by the user
+                titleTextBox.Enabled = true;
+                yearTextBox.Enabled = true;
+                genreComboBox.Enabled = true;
+                movieImagePathButton.Enabled = true;
+                lengthTextBox.Enabled = true;
+                ratingTextBox.Enabled = true;
+                saveMovieButton.Enabled = true;
+            }
+            else
+            {
+                //  Show prompt message
+                MessageBox.Show("Select a movie first.");
+            }
+        }
+        private int ModifyDBMovie(Movie modifyMovie)
+        {
+            try
+            {
+                //  The following objects will be used to modify a movie item in the movie table
+                MySqlConnection dbConnection11 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+
+                //  Declare int variable for rows affected upon changes
+                int queryResult;
+
+                //  Open database connection
+                dbConnection11.Open();
+
+                //  SQL query to execute in the db           
+                string sqlQuery = "UPDATE movie SET image_file_path = '" + modifyMovie.ImagePath + "', title = '" + modifyMovie.Title + "', year = '"
+                        + modifyMovie.Year + "', length = '" + modifyMovie.Length + "', audience_rating = '" + modifyMovie.Rating + "' WHERE id = " + modifyMovie.ID + ";";
+
+                //  SQL containing the query to be executed
+                MySqlCommand dbCommand11 = new MySqlCommand(sqlQuery, dbConnection11);
+
+                //  Result of rows affected
+                queryResult = dbCommand11.ExecuteNonQuery();
+
+                //  Close DB connection
+                dbConnection11.Close();
+
+                return queryResult;
+            }
+            catch
+            {
+                MessageBox.Show("Error upon movie modification detected.");
+
+                //  Open and close connection upon an error
+                MySqlConnection dbConnection11 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+
+                dbConnection11.Close();
+
+                return 0;
+            }
+        }
+        private void SaveMovieButton_Click(object sender, EventArgs e)
+        {
+            //  Declare movie variable
+            Movie modifyMovie = new Movie();
+
+            //  Modified movie data values pointed to the modify movie fields
+            //  ID is not able to be changed due to it being the primary key
+            modifyMovie.ID = int.Parse(idTextBox.Text);
+            modifyMovie.Title = titleTextBox.Text;
+            modifyMovie.Year = int.Parse(yearTextBox.Text);
+            modifyMovie.Length = int.Parse(lengthTextBox.Text);
+            modifyMovie.Rating = double.Parse(ratingTextBox.Text);
+            modifyMovie.ImagePath = imagePathTextBox.Text;
 
             //  Empty Movies list
             movieList = new List<Movie>();
 
             //  Call method to insert add movie fields from form to a movie object in the list
-            DeleteDBMovie(deleteMovie);
+            ModifyDBMovie(modifyMovie);
 
             //  Clear imageList for adding movie item
             movieImageList.Images.Clear();
@@ -1263,6 +1363,15 @@ namespace XMM2
 
             //  Remove movie data method
             ClearMovieInputs();
+
+            //  Disable TextBoxes and Buttons to deny access for anymore changes made by the user
+            titleTextBox.Enabled = false;
+            yearTextBox.Enabled = false;
+            genreComboBox.Enabled = false;
+            memberImagePathButton.Enabled = false;
+            lengthTextBox.Enabled = false;
+            ratingTextBox.Enabled = false;
+            saveMovieButton.Enabled = false;
         }
     }
 }

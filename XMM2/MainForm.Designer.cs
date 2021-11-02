@@ -59,7 +59,6 @@
             this.modifyGenre = new System.Windows.Forms.Button();
             this.membersListBox = new System.Windows.Forms.ListBox();
             this.movieImageList = new System.Windows.Forms.ImageList(this.components);
-            this.genreTextBox = new System.Windows.Forms.TextBox();
             this.membersImageList = new System.Windows.Forms.ImageList(this.components);
             this.label9 = new System.Windows.Forms.Label();
             this.memberNameTextBox = new System.Windows.Forms.TextBox();
@@ -129,6 +128,7 @@
             this.addMemberTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.resetMemberMovieButton = new System.Windows.Forms.Button();
+            this.genreComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.moviePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -196,6 +196,7 @@
             this.modifyMovieButton.TabIndex = 5;
             this.modifyMovieButton.Text = "Modify movie";
             this.modifyMovieButton.UseVisualStyleBackColor = true;
+            this.modifyMovieButton.Click += new System.EventHandler(this.ModifyMovieButton_Click);
             // 
             // modifyMemberButton
             // 
@@ -423,15 +424,6 @@
             this.movieImageList.ImageSize = new System.Drawing.Size(255, 255);
             this.movieImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // genreTextBox
-            // 
-            this.genreTextBox.Enabled = false;
-            this.genreTextBox.Location = new System.Drawing.Point(563, 523);
-            this.genreTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.genreTextBox.Name = "genreTextBox";
-            this.genreTextBox.Size = new System.Drawing.Size(134, 22);
-            this.genreTextBox.TabIndex = 57;
-            // 
             // membersImageList
             // 
             this.membersImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
@@ -646,6 +638,7 @@
             // 
             // saveMemberButton
             // 
+            this.saveMemberButton.Enabled = false;
             this.saveMemberButton.Location = new System.Drawing.Point(929, 213);
             this.saveMemberButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.saveMemberButton.Name = "saveMemberButton";
@@ -657,6 +650,7 @@
             // 
             // saveMovieButton
             // 
+            this.saveMovieButton.Enabled = false;
             this.saveMovieButton.Location = new System.Drawing.Point(608, 674);
             this.saveMovieButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.saveMovieButton.Name = "saveMovieButton";
@@ -664,6 +658,7 @@
             this.saveMovieButton.TabIndex = 105;
             this.saveMovieButton.Text = "Save Modifications";
             this.saveMovieButton.UseVisualStyleBackColor = true;
+            this.saveMovieButton.Click += new System.EventHandler(this.SaveMovieButton_Click);
             // 
             // memberImagePathTextBox
             // 
@@ -685,6 +680,7 @@
             // 
             // movieImagePathButton
             // 
+            this.movieImagePathButton.Enabled = false;
             this.movieImagePathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.movieImagePathButton.Location = new System.Drawing.Point(703, 591);
             this.movieImagePathButton.Name = "movieImagePathButton";
@@ -1060,7 +1056,7 @@
             "2",
             "3",
             "4"});
-            this.addMemberTypeComboBox.Location = new System.Drawing.Point(1128, 317);
+            this.addMemberTypeComboBox.Location = new System.Drawing.Point(1129, 317);
             this.addMemberTypeComboBox.Name = "addMemberTypeComboBox";
             this.addMemberTypeComboBox.Size = new System.Drawing.Size(164, 24);
             this.addMemberTypeComboBox.TabIndex = 161;
@@ -1085,11 +1081,22 @@
             this.resetMemberMovieButton.UseVisualStyleBackColor = true;
             this.resetMemberMovieButton.Click += new System.EventHandler(this.ResetMemberMovieButton_Click);
             // 
+            // genreComboBox
+            // 
+            this.genreComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.genreComboBox.Enabled = false;
+            this.genreComboBox.FormattingEnabled = true;
+            this.genreComboBox.Location = new System.Drawing.Point(563, 523);
+            this.genreComboBox.Name = "genreComboBox";
+            this.genreComboBox.Size = new System.Drawing.Size(134, 24);
+            this.genreComboBox.TabIndex = 164;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1357, 731);
+            this.Controls.Add(this.genreComboBox);
             this.Controls.Add(this.resetMemberMovieButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.addMemberTypeComboBox);
@@ -1158,7 +1165,6 @@
             this.Controls.Add(this.memberDOBTextBox);
             this.Controls.Add(this.memberNameTextBox);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.genreTextBox);
             this.Controls.Add(this.membersListBox);
             this.Controls.Add(this.modifyGenre);
             this.Controls.Add(this.addGenreButton);
@@ -1235,7 +1241,6 @@
         private System.Windows.Forms.Button modifyGenre;
         private System.Windows.Forms.ListBox membersListBox;
         private System.Windows.Forms.ImageList movieImageList;
-        private System.Windows.Forms.TextBox genreTextBox;
         private System.Windows.Forms.ImageList membersImageList;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox memberNameTextBox;
@@ -1305,6 +1310,7 @@
         private System.Windows.Forms.ComboBox addMemberTypeComboBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button resetMemberMovieButton;
+        private System.Windows.Forms.ComboBox genreComboBox;
     }
 }
 
