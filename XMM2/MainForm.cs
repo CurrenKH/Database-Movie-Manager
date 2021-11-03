@@ -1509,6 +1509,7 @@ namespace XMM2
 
         private void ResetMovieSearchButton_Click(object sender, EventArgs e)
         {
+            //  Empty search TextBox
             movieSearchTextBox.Text = "";
 
             //  If the TextBox is empty revert ListView to default
@@ -1570,6 +1571,7 @@ namespace XMM2
             //  Declare genre variable
             Genre newGenre = new Genre();
 
+            //  New genre data values pointed to the add genre fields
             newGenre.Code = addGenreCodeTextBox.Text;
             newGenre.Name = addGenreNameTextBox.Text;
             newGenre.Description = addGenreDescriptionTextBox.Text;
