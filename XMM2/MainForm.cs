@@ -1586,9 +1586,6 @@ namespace XMM2
             //  Read genres from the database
             ReadGenresDB();
 
-            //  Display genres in ListBox method
-            DisplayGenres();
-
             //  Clear inputs method
             ClearAddGenreInputs();
 
@@ -1673,9 +1670,6 @@ namespace XMM2
 
                 //  Read genres from the database
                 ReadGenresDB();
-
-                //  Display genres in ListBox method
-                DisplayGenres();
 
                 //  Clear inputs method
                 ClearGenreInputs();
