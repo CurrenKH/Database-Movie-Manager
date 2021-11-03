@@ -898,9 +898,9 @@
             // 
             // resetFilterButton
             // 
-            this.resetFilterButton.Location = new System.Drawing.Point(43, 499);
+            this.resetFilterButton.Location = new System.Drawing.Point(26, 499);
             this.resetFilterButton.Name = "resetFilterButton";
-            this.resetFilterButton.Size = new System.Drawing.Size(176, 37);
+            this.resetFilterButton.Size = new System.Drawing.Size(209, 48);
             this.resetFilterButton.TabIndex = 143;
             this.resetFilterButton.Text = "Reset Genre/Movie Filter";
             this.resetFilterButton.UseVisualStyleBackColor = true;
