@@ -583,7 +583,7 @@ namespace XMM2
                             }
                         }
                     }
-                    /*
+                    
                     //  Check assigned integer for each member type and display correct string
                     if (checkMember.Type == 1)
                     {
@@ -601,7 +601,7 @@ namespace XMM2
                     {
                         memberTypeComboBox.Text = "Director of photography";
                     }
-                    */
+                    
                 }
 
                 //  Declare int variable for the selected indice (#0) in the ListBox
@@ -680,6 +680,7 @@ namespace XMM2
                 return 0;
             }
         }
+
         private void AddMovieButton_Click(object sender, EventArgs e)
         {
             //  Replace inputted backslashes inserted by OpenFileDialog to forward slashes
@@ -942,10 +943,10 @@ namespace XMM2
         private void ReadMemberTypesComboBox()
         {
             //  Repopulate ComboBox
-            memberTypeComboBox.Items.Add("1");
-            memberTypeComboBox.Items.Add("2");
-            memberTypeComboBox.Items.Add("3");
-            memberTypeComboBox.Items.Add("4");
+            memberTypeComboBox.Items.Add("Actor/Actresse");
+            memberTypeComboBox.Items.Add("Director");
+            memberTypeComboBox.Items.Add("Producer");
+            memberTypeComboBox.Items.Add("Director of photography");
         }
 
         private void ResetFilterButton_Click_1(object sender, EventArgs e)
@@ -997,8 +998,26 @@ namespace XMM2
             newMember.ID = int.Parse(addMemberIDTextBox.Text);
             newMember.Name = addMemberNameTextBox.Text;
             newMember.DOB = DateTime.Parse(addMemberDOBTextBox.Text);
-            newMember.Type = int.Parse(addMemberTypeComboBox.Text);
+            //  newMember.Type = int.Parse(addMemberTypeComboBox.Text);
             newMember.ImagePath = addMemberImagePathTextBox.Text;
+
+            //  Check inputted string and associate the correct ID to it from the table
+            if (addMemberTypeComboBox.Text == "Actor/Actresse")
+            {
+                newMember.Type = int.Parse("1");
+            }
+            if (addMemberTypeComboBox.Text == "Director")
+            {
+                newMember.Type = int.Parse("2");
+            }
+            if (addMemberTypeComboBox.Text == "Producer")
+            {
+                newMember.Type = int.Parse("3");
+            }
+            if (addMemberTypeComboBox.Text == "Director of photography")
+            {
+                newMember.Type = int.Parse("4");
+            }
 
 
             //  Empty Members list
@@ -1020,10 +1039,10 @@ namespace XMM2
             ClearAddMemberInputs();
 
             //  Repopulate ComboBox
-            addMemberTypeComboBox.Items.Add("1");
-            addMemberTypeComboBox.Items.Add("2");
-            addMemberTypeComboBox.Items.Add("3");
-            addMemberTypeComboBox.Items.Add("4");
+            addMemberTypeComboBox.Items.Add("Actor/Actresse");
+            addMemberTypeComboBox.Items.Add("Director");
+            addMemberTypeComboBox.Items.Add("Producer");
+            addMemberTypeComboBox.Items.Add("Director of Photography");
         }
 
         private int ModifyDBMember(Member modifyMember)
@@ -1229,8 +1248,26 @@ namespace XMM2
                 modifyMember.ID = int.Parse(memberIDTextBox.Text);
                 modifyMember.Name = memberNameTextBox.Text;
                 modifyMember.DOB = DateTime.Parse(memberDOBTextBox.Text);
-                modifyMember.Type = int.Parse(memberTypeComboBox.Text);
+                //  modifyMember.Type = int.Parse(memberTypeComboBox.Text);
                 modifyMember.ImagePath = memberImagePathTextBox.Text;
+
+                //  Check inputted string and associate the correct ID to it from the table
+                if (memberTypeComboBox.Text == "Actor/Actresse")
+                {
+                    modifyMember.Type = int.Parse("1");
+                }
+                if (memberTypeComboBox.Text == "Director")
+                {
+                    modifyMember.Type = int.Parse("2");
+                }
+                if (memberTypeComboBox.Text == "Producer")
+                {
+                    modifyMember.Type = int.Parse("3");
+                }
+                if (memberTypeComboBox.Text == "Director of photography")
+                {
+                    modifyMember.Type = int.Parse("4");
+                }
 
                 //  Empty Members list
                 memberList = new List<Member>();

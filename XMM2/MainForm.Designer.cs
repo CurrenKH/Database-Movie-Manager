@@ -122,8 +122,6 @@
             this.addMemberDOBLabel = new System.Windows.Forms.Label();
             this.addMemberIDName = new System.Windows.Forms.Label();
             this.addMemberDOBFormatLabel = new System.Windows.Forms.Label();
-            this.memberTypeNumbersLabel = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.memberTypeComboBox = new System.Windows.Forms.ComboBox();
             this.addMemberTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -183,7 +181,7 @@
             // 
             // addMemberButton
             // 
-            this.addMemberButton.Location = new System.Drawing.Point(1042, 381);
+            this.addMemberButton.Location = new System.Drawing.Point(1042, 359);
             this.addMemberButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.addMemberButton.Name = "addMemberButton";
             this.addMemberButton.Size = new System.Drawing.Size(152, 44);
@@ -205,7 +203,7 @@
             // 
             // modifyMemberButton
             // 
-            this.modifyMemberButton.Location = new System.Drawing.Point(824, 213);
+            this.modifyMemberButton.Location = new System.Drawing.Point(830, 196);
             this.modifyMemberButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.modifyMemberButton.Name = "modifyMemberButton";
             this.modifyMemberButton.Size = new System.Drawing.Size(99, 44);
@@ -227,7 +225,7 @@
             // 
             // deleteMemberButton
             // 
-            this.deleteMemberButton.Location = new System.Drawing.Point(1206, 381);
+            this.deleteMemberButton.Location = new System.Drawing.Point(1206, 359);
             this.deleteMemberButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.deleteMemberButton.Name = "deleteMemberButton";
             this.deleteMemberButton.Size = new System.Drawing.Size(152, 44);
@@ -418,7 +416,7 @@
             // 
             this.membersListBox.FormattingEnabled = true;
             this.membersListBox.ItemHeight = 16;
-            this.membersListBox.Location = new System.Drawing.Point(803, 280);
+            this.membersListBox.Location = new System.Drawing.Point(803, 265);
             this.membersListBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.membersListBox.Name = "membersListBox";
             this.membersListBox.Size = new System.Drawing.Size(217, 100);
@@ -440,7 +438,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(841, 155);
+            this.label9.Location = new System.Drawing.Point(841, 137);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(44, 17);
             this.label9.TabIndex = 58;
@@ -535,7 +533,7 @@
             // 
             this.membersLabel.AutoSize = true;
             this.membersLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.membersLabel.Location = new System.Drawing.Point(810, 258);
+            this.membersLabel.Location = new System.Drawing.Point(810, 243);
             this.membersLabel.Name = "membersLabel";
             this.membersLabel.Size = new System.Drawing.Size(92, 20);
             this.membersLabel.TabIndex = 86;
@@ -648,7 +646,7 @@
             // saveMemberButton
             // 
             this.saveMemberButton.Enabled = false;
-            this.saveMemberButton.Location = new System.Drawing.Point(929, 213);
+            this.saveMemberButton.Location = new System.Drawing.Point(935, 196);
             this.saveMemberButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.saveMemberButton.Name = "saveMemberButton";
             this.saveMemberButton.Size = new System.Drawing.Size(99, 44);
@@ -672,7 +670,7 @@
             // memberImagePathTextBox
             // 
             this.memberImagePathTextBox.Enabled = false;
-            this.memberImagePathTextBox.Location = new System.Drawing.Point(892, 182);
+            this.memberImagePathTextBox.Location = new System.Drawing.Point(892, 165);
             this.memberImagePathTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.memberImagePathTextBox.Name = "memberImagePathTextBox";
             this.memberImagePathTextBox.Size = new System.Drawing.Size(164, 22);
@@ -681,7 +679,7 @@
             // memberImagePathLabel
             // 
             this.memberImagePathLabel.AutoSize = true;
-            this.memberImagePathLabel.Location = new System.Drawing.Point(802, 185);
+            this.memberImagePathLabel.Location = new System.Drawing.Point(802, 168);
             this.memberImagePathLabel.Name = "memberImagePathLabel";
             this.memberImagePathLabel.Size = new System.Drawing.Size(83, 17);
             this.memberImagePathLabel.TabIndex = 108;
@@ -703,7 +701,7 @@
             // 
             this.memberImagePathButton.Enabled = false;
             this.memberImagePathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.memberImagePathButton.Location = new System.Drawing.Point(1063, 171);
+            this.memberImagePathButton.Location = new System.Drawing.Point(1063, 154);
             this.memberImagePathButton.Name = "memberImagePathButton";
             this.memberImagePathButton.Size = new System.Drawing.Size(48, 35);
             this.memberImagePathButton.TabIndex = 121;
@@ -715,7 +713,7 @@
             // addMemberImagePathButton
             // 
             this.addMemberImagePathButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addMemberImagePathButton.Location = new System.Drawing.Point(1300, 337);
+            this.addMemberImagePathButton.Location = new System.Drawing.Point(1300, 314);
             this.addMemberImagePathButton.Name = "addMemberImagePathButton";
             this.addMemberImagePathButton.Size = new System.Drawing.Size(48, 35);
             this.addMemberImagePathButton.TabIndex = 122;
@@ -953,7 +951,7 @@
             // addMemberImagePathTextBox
             // 
             this.addMemberImagePathTextBox.Enabled = false;
-            this.addMemberImagePathTextBox.Location = new System.Drawing.Point(1129, 347);
+            this.addMemberImagePathTextBox.Location = new System.Drawing.Point(1129, 324);
             this.addMemberImagePathTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.addMemberImagePathTextBox.Name = "addMemberImagePathTextBox";
             this.addMemberImagePathTextBox.Size = new System.Drawing.Size(164, 22);
@@ -962,7 +960,7 @@
             // addMemberImagePathLabel
             // 
             this.addMemberImagePathLabel.AutoSize = true;
-            this.addMemberImagePathLabel.Location = new System.Drawing.Point(1039, 350);
+            this.addMemberImagePathLabel.Location = new System.Drawing.Point(1039, 327);
             this.addMemberImagePathLabel.Name = "addMemberImagePathLabel";
             this.addMemberImagePathLabel.Size = new System.Drawing.Size(83, 17);
             this.addMemberImagePathLabel.TabIndex = 153;
@@ -987,7 +985,7 @@
             // addMemberTypeLabel
             // 
             this.addMemberTypeLabel.AutoSize = true;
-            this.addMemberTypeLabel.Location = new System.Drawing.Point(1078, 320);
+            this.addMemberTypeLabel.Location = new System.Drawing.Point(1078, 297);
             this.addMemberTypeLabel.Name = "addMemberTypeLabel";
             this.addMemberTypeLabel.Size = new System.Drawing.Size(44, 17);
             this.addMemberTypeLabel.TabIndex = 149;
@@ -1021,37 +1019,17 @@
             this.addMemberDOBFormatLabel.TabIndex = 157;
             this.addMemberDOBFormatLabel.Text = "YYYY-MM-DD";
             // 
-            // memberTypeNumbersLabel
-            // 
-            this.memberTypeNumbersLabel.AutoSize = true;
-            this.memberTypeNumbersLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.memberTypeNumbersLabel.Location = new System.Drawing.Point(802, 131);
-            this.memberTypeNumbersLabel.Name = "memberTypeNumbersLabel";
-            this.memberTypeNumbersLabel.Size = new System.Drawing.Size(333, 17);
-            this.memberTypeNumbersLabel.TabIndex = 158;
-            this.memberTypeNumbersLabel.Text = "1: Actor | 2: Director | 3: Producer | 4: Photographer";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(1025, 296);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(333, 17);
-            this.label2.TabIndex = 159;
-            this.label2.Text = "1: Actor | 2: Director | 3: Producer | 4: Photographer";
-            // 
             // memberTypeComboBox
             // 
             this.memberTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.memberTypeComboBox.Enabled = false;
             this.memberTypeComboBox.FormattingEnabled = true;
             this.memberTypeComboBox.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4"});
-            this.memberTypeComboBox.Location = new System.Drawing.Point(892, 152);
+            "Actor/Actresse",
+            "Director",
+            "Producer",
+            "Director of photography"});
+            this.memberTypeComboBox.Location = new System.Drawing.Point(892, 134);
             this.memberTypeComboBox.Name = "memberTypeComboBox";
             this.memberTypeComboBox.Size = new System.Drawing.Size(164, 24);
             this.memberTypeComboBox.TabIndex = 160;
@@ -1061,11 +1039,11 @@
             this.addMemberTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.addMemberTypeComboBox.FormattingEnabled = true;
             this.addMemberTypeComboBox.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4"});
-            this.addMemberTypeComboBox.Location = new System.Drawing.Point(1129, 317);
+            "Actor/Actresse",
+            "Director",
+            "Producer",
+            "Director of photography"});
+            this.addMemberTypeComboBox.Location = new System.Drawing.Point(1129, 294);
             this.addMemberTypeComboBox.Name = "addMemberTypeComboBox";
             this.addMemberTypeComboBox.Size = new System.Drawing.Size(164, 24);
             this.addMemberTypeComboBox.TabIndex = 161;
@@ -1082,9 +1060,9 @@
             // 
             // resetMemberMovieButton
             // 
-            this.resetMemberMovieButton.Location = new System.Drawing.Point(883, 381);
+            this.resetMemberMovieButton.Location = new System.Drawing.Point(883, 370);
             this.resetMemberMovieButton.Name = "resetMemberMovieButton";
-            this.resetMemberMovieButton.Size = new System.Drawing.Size(137, 29);
+            this.resetMemberMovieButton.Size = new System.Drawing.Size(137, 40);
             this.resetMemberMovieButton.TabIndex = 163;
             this.resetMemberMovieButton.Text = "Reset Filters";
             this.resetMemberMovieButton.UseVisualStyleBackColor = true;
@@ -1143,8 +1121,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.addMemberTypeComboBox);
             this.Controls.Add(this.memberTypeComboBox);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.memberTypeNumbersLabel);
             this.Controls.Add(this.addMemberDOBFormatLabel);
             this.Controls.Add(this.addMemberIDTextBox);
             this.Controls.Add(this.addMemberIDLabel);
@@ -1346,8 +1322,6 @@
         private System.Windows.Forms.Label addMemberDOBLabel;
         private System.Windows.Forms.Label addMemberIDName;
         private System.Windows.Forms.Label addMemberDOBFormatLabel;
-        private System.Windows.Forms.Label memberTypeNumbersLabel;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox memberTypeComboBox;
         private System.Windows.Forms.ComboBox addMemberTypeComboBox;
         private System.Windows.Forms.Label label3;
