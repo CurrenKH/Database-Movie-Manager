@@ -1591,6 +1591,12 @@ namespace XMM2
 
             //  Clear inputs method
             ClearAddGenreInputs();
+
+            //  Clear ComboBox
+            addMovieGenreComboBox.Items.Clear();
+
+            //  Method to repopulate addMovieGenreComboBox after a clear data method is used
+            RefreshAddMovieGenres();
         }
 
         private void ModifyGenre_Click(object sender, EventArgs e)
@@ -1672,7 +1678,7 @@ namespace XMM2
                 DisplayGenres();
 
                 //  Clear inputs method
-                ClearAddGenreInputs();
+                ClearGenreInputs();
 
                 //  Disable TextBoxes and Buttons to deny access for anymore changes made by the user
                 genreNameTextBox.Enabled = false;
