@@ -38,11 +38,13 @@ namespace XMM2
             SetDBConnection("127.0.0.1", "CurrenH", "dfcg22r", "oop");
             // =======================================================
 
-
+            //  Read movies from database
             ReadMoviesDB();
 
+            //  Read genres from database
             ReadGenresDB();
 
+            //  Read members from database
             ReadMembersDB();
         }
 
@@ -482,6 +484,15 @@ namespace XMM2
             return counter;
         }
 
+        private void RefreshAddMovieGenres()
+        {
+            //  Loop to repopulate addMovieGenreComboBox after a clear data method is used
+            for (int i = 0; i < genreList.Count; i++)
+            {
+                addMovieGenreComboBox.Items.Add(genreList[i].Name);
+            }
+        }
+
         private void MoviesListView_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -705,11 +716,8 @@ namespace XMM2
             //  Method to clear add movie TextBox/ComboBox data
             ClearAddMovieInputs();
 
-            //  Loop to repopulate genreComboBox after a clear data method is used
-            for (int i = 0; i < genreList.Count; i++)
-            {
-                addMovieGenreComboBox.Items.Add(genreList[i].Name);
-            }
+            //  Method to repopulate addMovieGenreComboBox after a clear data method is used
+            RefreshAddMovieGenres();
         }
         private int InsertDBMember(Member newMember)
         {
@@ -886,6 +894,14 @@ namespace XMM2
             addMemberTypeComboBox.Items.Clear();
         }
 
+        private void ClearAddGenreInputs()
+        {
+            //  Clear TextBoxes
+            addGenreCodeTextBox.Text = "";
+            addGenreNameTextBox.Text = "";
+            addGenreDescriptionTextBox.Text = "";
+        }
+
         private void ClearMemberInputs()
         {
             //  Clear TextBoxes
@@ -908,6 +924,10 @@ namespace XMM2
             genreCodeTextBox.Text = "";
             genreNameTextBox.Text = "";
             genreDescriptionTextBox.Text = "";
+
+            //  Clear ComboBoxes
+            genreComboBox.Items.Clear();
+            addMovieGenreComboBox.Items.Clear();
         }
 
         private void ReadGenresComboBox()
@@ -941,6 +961,9 @@ namespace XMM2
 
             //  Read genres method
             ReadGenresComboBox();
+
+            //  Read genres method (for second ComboBox)
+            RefreshAddMovieGenres();
         }
 
         private void AddMovieImagePathButton_Click(object sender, EventArgs e)
@@ -1499,6 +1522,191 @@ namespace XMM2
 
             //  Read member types method
             ReadMemberTypesComboBox();
+        }
+        private int InsertDBGenre(Genre newGenre)
+        {
+            try
+            {
+                //  The following objects will be used to add a genre item in the genre table
+                MySqlConnection dbConnection12 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+                MySqlCommand dbCommand12;
+
+                //  Declare int variable for rows affected upon changes
+                int queryResult;
+
+                //  Open database connection
+                dbConnection12.Open();
+
+                //  SQL query to execute in the db 
+                string sqlQuery = "INSERT INTO genre VALUES('" + newGenre.Code.ToUpper() + "', '" + newGenre.Name + "', '" + newGenre.Description + "');";
+
+                //  SQL containing the query to be executed
+                dbCommand12 = new MySqlCommand(sqlQuery, dbConnection12);
+
+                //  Result of rows affected
+                queryResult = dbCommand12.ExecuteNonQuery();
+
+                //  Close DB connection
+                dbConnection12.Close();
+
+                return queryResult;
+            }
+            catch
+            {
+                MessageBox.Show("Error upon adding new genre detected.");
+
+                //  Open and close connection upon an error
+                MySqlConnection dbConnection12 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+
+                //  Close DB connection
+                dbConnection12.Close();
+
+                return 0;
+            }
+        }
+
+        private void AddGenreButton_Click(object sender, EventArgs e)
+        {
+            //  Declare genre variable
+            Genre newGenre = new Genre();
+
+            newGenre.Code = addGenreCodeTextBox.Text;
+            newGenre.Name = addGenreNameTextBox.Text;
+            newGenre.Description = addGenreDescriptionTextBox.Text;
+
+            //  Empty Genres list
+            genreList = new List<Genre>();
+
+            //  Call method to insert add genre fields from form to a genre object in the list
+            InsertDBGenre(newGenre);
+
+            //  Clear ListBox
+            genreListBox.Items.Clear();
+
+            //  Read genres from the database
+            ReadGenresDB();
+
+            //  Display genres in ListBox method
+            DisplayGenres();
+
+            //  Clear inputs method
+            ClearAddGenreInputs();
+        }
+
+        private void ModifyGenre_Click(object sender, EventArgs e)
+        {
+            //  Check if a ListBox selection for members exists
+            if (genreListBox.SelectedIndex < 0)
+            {
+                //  Show error message
+                MessageBox.Show("Select a genre from the ListBox.");
+            }
+            //  Otherwise continue actions
+            else
+            {
+                //  Enable TextBoxes and Button to allow access for changes made by the user
+                genreNameTextBox.Enabled = true;
+                genreDescriptionTextBox.Enabled = true;
+                saveGenreButton.Enabled = true;
+            }
+        }
+        private int ModifyDBGenre(Genre genre)
+        {
+            //  The following objects will be used to modify a genre item in the genre table
+            MySqlConnection dbConnection13 = CreateDBConnection(dbHost, dbUsername, dbPassword, dbName);
+
+            //  Declare int variable for rows affected upon changes
+            int queryResult;
+
+            //  Open database connection
+            dbConnection13.Open();
+
+            //  SQL query to execute in the db    
+            string sqlQuery = "UPDATE genre SET name = '" + genre.Name + "', description = '" + genre.Description + "' WHERE code = '" + genre.Code.ToUpper() + "';";
+
+            //  SQL containing the query to be executed
+            MySqlCommand dbCommand13 = new MySqlCommand(sqlQuery, dbConnection13);
+
+            //  Result of rows affected
+            queryResult = dbCommand13.ExecuteNonQuery();
+
+            //  Close DB connection
+            dbConnection13.Close();
+
+            return queryResult;
+        }
+
+        private void SaveGenreButton_Click(object sender, EventArgs e)
+        {
+            //  Check if a ListBox selection for genres exists
+            if (genreListBox.SelectedIndex < 0)
+            {
+                //  Show error message
+                MessageBox.Show("Select a genre from the ListBox first if you wish to make any changes.");
+            }
+            else
+            {
+
+                //  Declare genre variable
+                Genre modifyGenre = new Genre();
+
+                //  Modified genre data values pointed to the modify genre fields
+                //  Code is not able to be changed due to it being the primary key
+                modifyGenre.Code = genreCodeTextBox.Text;
+                modifyGenre.Name = genreNameTextBox.Text;
+                modifyGenre.Description = genreDescriptionTextBox.Text;
+
+                //  Empty Genres list
+                genreList = new List<Genre>();
+
+                //  Call method to insert add genre fields from form to a genre object in the list
+                ModifyDBGenre(modifyGenre);
+
+                //  Clear ListBox
+                genreListBox.Items.Clear();
+
+                //  Read genres from the database
+                ReadGenresDB();
+
+                //  Display genres in ListBox method
+                DisplayGenres();
+
+                //  Clear inputs method
+                ClearAddGenreInputs();
+
+                //  Disable TextBoxes and Buttons to deny access for anymore changes made by the user
+                genreNameTextBox.Enabled = false;
+                genreDescriptionTextBox.Enabled = false;
+                saveGenreButton.Enabled = false;
+
+                //// -- Call these 4 instructions below to refresh the genre data -- ////
+                //// ---  in each ComboBox to prevent creating duplicate entries --- ////
+
+                //  Clear ComboBox
+                genreComboBox.Items.Clear();
+
+                //  Method to repopulate genreComboBox after a clear data method is used
+                ReadGenresComboBox();
+
+                //  Clear ComboBox
+                addMovieGenreComboBox.Items.Clear();
+
+                //  Method to repopulate addMovieGenreComboBox after a clear data method is used
+                RefreshAddMovieGenres();
+
+
+                //// -- Call these 3 instructions below to refresh the genre data -- ////
+                //// ---  associated with each movie after a genre modification  --- ////
+
+                //  Empty Movies list
+                movieList = new List<Movie>();
+
+                //  Read movies from the database
+                ReadMoviesDB();
+
+                //  Read movie list and display updated data
+                UpdateListView();
+            }
         }
     }
 }

@@ -74,11 +74,11 @@
             this.label5 = new System.Windows.Forms.Label();
             this.genreInfoLabel = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.addGenreDescriptionTextBox = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.addGenreNameTextBox = new System.Windows.Forms.TextBox();
+            this.addGenreCodeTextBox = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.saveGenreButton = new System.Windows.Forms.Button();
             this.movieInfoLabel = new System.Windows.Forms.Label();
@@ -401,6 +401,7 @@
             this.addGenreButton.TabIndex = 47;
             this.addGenreButton.Text = "Add genre";
             this.addGenreButton.UseVisualStyleBackColor = true;
+            this.addGenreButton.Click += new System.EventHandler(this.AddGenreButton_Click);
             // 
             // modifyGenre
             // 
@@ -411,6 +412,7 @@
             this.modifyGenre.TabIndex = 48;
             this.modifyGenre.Text = "Modify genre";
             this.modifyGenre.UseVisualStyleBackColor = true;
+            this.modifyGenre.Click += new System.EventHandler(this.ModifyGenre_Click);
             // 
             // membersListBox
             // 
@@ -569,23 +571,23 @@
             this.label7.TabIndex = 101;
             this.label7.Text = "Add:";
             // 
-            // textBox6
+            // addGenreDescriptionTextBox
             // 
-            this.textBox6.Location = new System.Drawing.Point(91, 651);
-            this.textBox6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox6.Multiline = true;
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(161, 67);
-            this.textBox6.TabIndex = 100;
+            this.addGenreDescriptionTextBox.Location = new System.Drawing.Point(91, 651);
+            this.addGenreDescriptionTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.addGenreDescriptionTextBox.Multiline = true;
+            this.addGenreDescriptionTextBox.Name = "addGenreDescriptionTextBox";
+            this.addGenreDescriptionTextBox.Size = new System.Drawing.Size(161, 67);
+            this.addGenreDescriptionTextBox.TabIndex = 100;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(33, 617);
+            this.label8.Location = new System.Drawing.Point(36, 617);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(52, 17);
+            this.label8.Size = new System.Drawing.Size(49, 17);
             this.label8.TabIndex = 99;
-            this.label8.Text = "Genre:";
+            this.label8.Text = "Name:";
             // 
             // label10
             // 
@@ -596,21 +598,21 @@
             this.label10.TabIndex = 98;
             this.label10.Text = "Description:";
             // 
-            // textBox7
+            // addGenreNameTextBox
             // 
-            this.textBox7.Location = new System.Drawing.Point(91, 614);
-            this.textBox7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(161, 22);
-            this.textBox7.TabIndex = 97;
+            this.addGenreNameTextBox.Location = new System.Drawing.Point(91, 614);
+            this.addGenreNameTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.addGenreNameTextBox.Name = "addGenreNameTextBox";
+            this.addGenreNameTextBox.Size = new System.Drawing.Size(161, 22);
+            this.addGenreNameTextBox.TabIndex = 97;
             // 
-            // textBox8
+            // addGenreCodeTextBox
             // 
-            this.textBox8.Location = new System.Drawing.Point(91, 575);
-            this.textBox8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(161, 22);
-            this.textBox8.TabIndex = 96;
+            this.addGenreCodeTextBox.Location = new System.Drawing.Point(91, 575);
+            this.addGenreCodeTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.addGenreCodeTextBox.Name = "addGenreCodeTextBox";
+            this.addGenreCodeTextBox.Size = new System.Drawing.Size(161, 22);
+            this.addGenreCodeTextBox.TabIndex = 96;
             // 
             // label11
             // 
@@ -623,6 +625,7 @@
             // 
             // saveGenreButton
             // 
+            this.saveGenreButton.Enabled = false;
             this.saveGenreButton.Location = new System.Drawing.Point(291, 599);
             this.saveGenreButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.saveGenreButton.Name = "saveGenreButton";
@@ -630,6 +633,7 @@
             this.saveGenreButton.TabIndex = 102;
             this.saveGenreButton.Text = "Save Modifications";
             this.saveGenreButton.UseVisualStyleBackColor = true;
+            this.saveGenreButton.Click += new System.EventHandler(this.SaveGenreButton_Click);
             // 
             // movieInfoLabel
             // 
@@ -1184,11 +1188,11 @@
             this.Controls.Add(this.movieInfoLabel);
             this.Controls.Add(this.saveGenreButton);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.textBox6);
+            this.Controls.Add(this.addGenreDescriptionTextBox);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label10);
-            this.Controls.Add(this.textBox7);
-            this.Controls.Add(this.textBox8);
+            this.Controls.Add(this.addGenreNameTextBox);
+            this.Controls.Add(this.addGenreCodeTextBox);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.genreInfoLabel);
             this.Controls.Add(this.label5);
@@ -1294,11 +1298,11 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label genreInfoLabel;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox addGenreDescriptionTextBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox addGenreNameTextBox;
+        private System.Windows.Forms.TextBox addGenreCodeTextBox;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button saveGenreButton;
         private System.Windows.Forms.Label movieInfoLabel;
