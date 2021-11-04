@@ -699,7 +699,7 @@ namespace XMM2
             newMovie.Rating = double.Parse(addMovieRatingTextBox.Text);
             newMovie.ImagePath = addMovieImagePathTextBox.Text;
             string selected = addMovieGenreComboBox.Text;
-            newMovie.Genres = selected;
+            //newMovie.Genres = selected;
 
             //  Empty Movies list
             movieList = new List<Movie>();
