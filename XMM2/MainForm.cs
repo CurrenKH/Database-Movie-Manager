@@ -15,8 +15,8 @@ namespace XMM2
     {
         //  Constants to use when creating connections to the database
         private const string dbHost = "127.0.0.1";
-        private const string dbUsername = "CurrenH";
-        private const string dbPassword = "dfcg22r";
+        private const string dbUsername = "1770460";
+        private const string dbPassword = "8r22d3g";
         private const string dbName = "oop";
 
         //  Declare MySQL connection
@@ -35,7 +35,7 @@ namespace XMM2
             //             == FORMAT ==
             //  ( host_name, username, password, db_name )
             //  This method sets up a connection to a MySQL database
-            SetDBConnection("127.0.0.1", "CurrenH", "dfcg22r", "oop");
+            SetDBConnection("127.0.0.1", "1770460", "8r22d3g", "oop");
             // =======================================================
 
             //  Read movies from database
@@ -213,7 +213,6 @@ namespace XMM2
                 existingGenre.Description = dataReader3.GetString(2);
 
                 Console.WriteLine("currentGenre = " + existingGenre.Code + " - " + existingGenre.Name + " - " + existingGenre.Description);
-
                 //  Add to the genre list
                 GenreList.Add(existingGenre);
 
@@ -370,6 +369,7 @@ namespace XMM2
                 //  Associate genre items from db
                 currentGenre.Code = dataReader.GetString(0);
                 currentGenre.Name = dataReader.GetString(1);
+                currentGenre.Description = dataReader.GetString(2);
 
                 Console.WriteLine("Code = " + currentGenre.Code + "\n" + "Name = " + currentGenre.Name);
 
@@ -698,6 +698,8 @@ namespace XMM2
             newMovie.Length = int.Parse(addMovieLengthTextBox.Text);
             newMovie.Rating = double.Parse(addMovieRatingTextBox.Text);
             newMovie.ImagePath = addMovieImagePathTextBox.Text;
+            string selected = addMovieGenreComboBox.Text;
+            newMovie.Genres = selected;
 
             //  Empty Movies list
             movieList = new List<Movie>();
