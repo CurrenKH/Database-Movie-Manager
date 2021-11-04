@@ -1044,7 +1044,7 @@ namespace XMM2
             addMemberTypeComboBox.Items.Add("Actor/Actresse");
             addMemberTypeComboBox.Items.Add("Director");
             addMemberTypeComboBox.Items.Add("Producer");
-            addMemberTypeComboBox.Items.Add("Director of Photography");
+            addMemberTypeComboBox.Items.Add("Director of photography");
         }
 
         private int ModifyDBMember(Member modifyMember)
