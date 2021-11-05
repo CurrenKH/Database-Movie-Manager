@@ -1041,7 +1041,7 @@ namespace XMM2
 
         private void AddMemberButton_Click(object sender, EventArgs e)
         {
-            //  Declare int and decimal variable for integer/decimal checking
+            //  Declare int variable for integer checking
             int num = -1;
 
             //  Checks if the DOB entry is the correct input type (YYYY-MM-DD)
@@ -1325,9 +1325,6 @@ namespace XMM2
 
         private void SaveMemberButton_Click(object sender, EventArgs e)
         {
-            //  Declare int and decimal variable for integer/decimal checking
-            int num = -1;
-
             //  Checks if the DOB entry is the correct input type (YYYY-MM-DD)
             var stringToValidate = memberDOBTextBox.Text;
             DateTime dt;
