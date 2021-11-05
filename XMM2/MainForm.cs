@@ -9,14 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using System.Text.RegularExpressions;
+using System.Globalization;
+
 namespace XMM2
 {
     public partial class MainForm : Form
     {
         //  Constants to use when creating connections to the database
         private const string dbHost = "127.0.0.1";
-        private const string dbUsername = "1770460";
-        private const string dbPassword = "8r22d3g";
+        private const string dbUsername = "CurrenH";
+        private const string dbPassword = "dfcg22r";
         private const string dbName = "oop";
 
         //  Declare MySQL connection
@@ -35,7 +37,7 @@ namespace XMM2
             //             == FORMAT ==
             //  ( host_name, username, password, db_name )
             //  This method sets up a connection to a MySQL database
-            SetDBConnection("127.0.0.1", "1770460", "8r22d3g", "oop");
+            SetDBConnection("127.0.0.1", "CurrenH", "dfcg22r", "oop");
             // =======================================================
 
             //  Read movies from database
@@ -683,44 +685,94 @@ namespace XMM2
 
         private void AddMovieButton_Click(object sender, EventArgs e)
         {
-            //  Replace inputted backslashes inserted by OpenFileDialog to forward slashes
-            //  Due to MySQL deleting backslashes in its syntax when read
-            //  Source: https://stackoverflow.com/questions/41935210/replace-all-blackslashes-with-forward-slash/41935242
-            addMovieImagePathTextBox.Text = addMovieImagePathTextBox.Text.Replace("\\", "/");
+            //  Declare int and decimal variable for integer/decimal checking
+            int num = -1;
+            decimal d;
 
-            //  Declare movie variable
-            Movie newMovie = new Movie();
+            //  Create array of TextBoxes
+            //  Source: https://stackoverflow.com/questions/29684210/most-efficient-way-to-see-if-any-of-textboxes-are-empty-c-sharp
+            var textBoxCollection = new[] { addMovieIDTextBox, addMovieTitleTextBox, addMovieYearTextBox, addMovieLengthTextBox, addMovieImagePathTextBox, addMovieRatingTextBox };
 
-            //  New movie data values pointed to the add movie fields
-            newMovie.ID = int.Parse(addMovieIDTextBox.Text);
-            newMovie.Title = addMovieTitleTextBox.Text;
-            newMovie.Year = int.Parse(addMovieYearTextBox.Text);
-            newMovie.Length = int.Parse(addMovieLengthTextBox.Text);
-            newMovie.Rating = double.Parse(addMovieRatingTextBox.Text);
-            newMovie.ImagePath = addMovieImagePathTextBox.Text;
-            string selected = addMovieGenreComboBox.Text;
-            //newMovie.Genres = selected;
+            //  Declare boolean value to use for array
+            bool atleastOneTextboxEmpty;
 
-            //  Empty Movies list
-            movieList = new List<Movie>();
+            //  Check if any TextBoxes are empty within the array
+            if (atleastOneTextboxEmpty = textBoxCollection.Any(t => String.IsNullOrWhiteSpace(t.Text)))
+            {
+                //  Show error message
+                MessageBox.Show("Not all entries for ADD MOVIE are filled.");
+            }
+            //  Check if ComboBox is empty
+            else if(addMovieGenreComboBox.Text == "")
+            {
+                //  Show error message
+                MessageBox.Show("Select a genre from the ComboBox.");
+            }
+            //  Integer checking for ID
+            else if (!int.TryParse(addMovieIDTextBox.Text, out num))
+            {
+                //  Show error message
+                MessageBox.Show("Invalid ID input. Use an integer instead.");
+            }
+            //  Integer checking for year
+            else if (!int.TryParse(addMovieYearTextBox.Text, out num))
+            {
+                //  Show error message
+                MessageBox.Show("Invalid year input. Use an integer instead.");
+            }
+            //  Integer checking for length
+            else if (!int.TryParse(lengthTextBox.Text, out num))
+            {
+                //  Show error message
+                MessageBox.Show("Invalid length input. Use an integer instead.");
+            }
+            //  Number checking for rating
+            else if (!decimal.TryParse(addMovieRatingTextBox.Text, out d))
+            {
+                //  Show error message
+                MessageBox.Show("Invalid rating input. Use a number instead.");
+            }
+            else
+            {
+                //  Replace inputted backslashes inserted by OpenFileDialog to forward slashes
+                //  Due to MySQL deleting backslashes in its syntax when read
+                //  Source: https://stackoverflow.com/questions/41935210/replace-all-blackslashes-with-forward-slash/41935242
+                addMovieImagePathTextBox.Text = addMovieImagePathTextBox.Text.Replace("\\", "/");
 
-            //  Call method to insert add movie fields from form to a movie object in the list
-            InsertDBMovie(newMovie);
+                //  Declare movie variable
+                Movie newMovie = new Movie();
 
-            //  Clear imageList for adding movie item
-            movieImageList.Images.Clear();
+                //  New movie data values pointed to the add movie fields
+                newMovie.ID = int.Parse(addMovieIDTextBox.Text);
+                newMovie.Title = addMovieTitleTextBox.Text;
+                newMovie.Year = int.Parse(addMovieYearTextBox.Text);
+                newMovie.Length = int.Parse(addMovieLengthTextBox.Text);
+                newMovie.Rating = double.Parse(addMovieRatingTextBox.Text);
+                newMovie.ImagePath = addMovieImagePathTextBox.Text;
+                string selected = addMovieGenreComboBox.Text;
+                //newMovie.Genres = selected;
 
-            //  Read movies from the database
-            ReadMoviesDB();
+                //  Empty Movies list
+                movieList = new List<Movie>();
 
-            //  Read movie list and display updated data
-            UpdateListView();
+                //  Call method to insert add movie fields from form to a movie object in the list
+                InsertDBMovie(newMovie);
 
-            //  Method to clear add movie TextBox/ComboBox data
-            ClearAddMovieInputs();
+                //  Clear imageList for adding movie item
+                movieImageList.Images.Clear();
 
-            //  Method to repopulate addMovieGenreComboBox after a clear data method is used
-            RefreshAddMovieGenres();
+                //  Read movies from the database
+                ReadMoviesDB();
+
+                //  Read movie list and display updated data
+                UpdateListView();
+
+                //  Method to clear add movie TextBox/ComboBox data
+                ClearAddMovieInputs();
+
+                //  Method to repopulate addMovieGenreComboBox after a clear data method is used
+                RefreshAddMovieGenres();
+            }
         }
         private int InsertDBMember(Member newMember)
         {
@@ -989,62 +1041,105 @@ namespace XMM2
 
         private void AddMemberButton_Click(object sender, EventArgs e)
         {
-            //  Replace inputted backslashes inserted by OpenFileDialog to forward slashes
-            //  Due to MySQL deleting backslashes in its syntax when read
-            addMemberImagePathTextBox.Text = addMemberImagePathTextBox.Text.Replace("\\", "/");
+            //  Declare int and decimal variable for integer/decimal checking
+            int num = -1;
 
-            //  Declare member variable
-            Member newMember = new Member();
+            //  Checks if the DOB entry is the correct input type (YYYY-MM-DD)
+            //  Source: https://stackoverflow.com/questions/35260469/how-to-validate-a-string-is-in-yyyy-mm-dd-form-c
+            var stringToValidate = addMemberDOBTextBox.Text;
+            DateTime dt;
+            bool correctDate = DateTime.TryParseExact(stringToValidate,"yyyy-MM-dd",CultureInfo.InvariantCulture, DateTimeStyles.None, out dt);
 
-            //  New member data values pointed to the add member fields
-            newMember.ID = int.Parse(addMemberIDTextBox.Text);
-            newMember.Name = addMemberNameTextBox.Text;
-            newMember.DOB = DateTime.Parse(addMemberDOBTextBox.Text);
-            //  newMember.Type = int.Parse(addMemberTypeComboBox.Text);
-            newMember.ImagePath = addMemberImagePathTextBox.Text;
+            //  Create array of TextBoxes
+            var textBoxCollection = new[] { addMemberNameTextBox, addMemberDOBTextBox, addMemberImagePathTextBox };
 
-            //  Check inputted string and associate the correct ID to it from the table
-            if (addMemberTypeComboBox.Text == "Actor/Actresse")
+            //  Declare boolean value to use for array
+            bool atleastOneTextboxEmpty;
+
+            //  Check if any TextBoxes are empty within the array
+            if (atleastOneTextboxEmpty = textBoxCollection.Any(t => String.IsNullOrWhiteSpace(t.Text)))
             {
-                newMember.Type = int.Parse("1");
+                //  Show error message
+                MessageBox.Show("Not all entries for ADD MEMBER are filled.");
             }
-            if (addMemberTypeComboBox.Text == "Director")
+            //  Check if ComboBox is empty
+            else if (addMemberTypeComboBox.Text == "")
             {
-                newMember.Type = int.Parse("2");
+                //  Show error message
+                MessageBox.Show("Select a member type from the ComboBox.");
             }
-            if (addMemberTypeComboBox.Text == "Producer")
+            //  Integer checking for ID
+            else if (!int.TryParse(addMemberIDTextBox.Text, out num))
             {
-                newMember.Type = int.Parse("3");
+                //  Show error message
+                MessageBox.Show("Invalid ID input. Use an integer instead.");
             }
-            if (addMemberTypeComboBox.Text == "Director of photography")
+            //  Date checking for DOB
+            else if (correctDate == false)
             {
-                newMember.Type = int.Parse("4");
+                //  Show error message
+                MessageBox.Show("Invalid date input. Use the format YYYY-MM-DD.");
             }
 
+            else
+            {
+                //  Replace inputted backslashes inserted by OpenFileDialog to forward slashes
+                //  Due to MySQL deleting backslashes in its syntax when read
+                addMemberImagePathTextBox.Text = addMemberImagePathTextBox.Text.Replace("\\", "/");
 
-            //  Empty Members list
-            memberList = new List<Member>();
+                //  Declare member variable
+                Member newMember = new Member();
 
-            //  Call method to insert add member fields from form to a member object in the list
-            InsertDBMember(newMember);
+                //  New member data values pointed to the add member fields
+                newMember.ID = int.Parse(addMemberIDTextBox.Text);
+                newMember.Name = addMemberNameTextBox.Text;
+                newMember.DOB = DateTime.Parse(addMemberDOBTextBox.Text);
+                //  newMember.Type = int.Parse(addMemberTypeComboBox.Text);
+                newMember.ImagePath = addMemberImagePathTextBox.Text;
 
-            //  Clear imageList for adding member item
-            membersImageList.Images.Clear();
+                //  Check inputted string and associate the correct ID to it from the table
+                if (addMemberTypeComboBox.Text == "Actor/Actresse")
+                {
+                    newMember.Type = int.Parse("1");
+                }
+                if (addMemberTypeComboBox.Text == "Director")
+                {
+                    newMember.Type = int.Parse("2");
+                }
+                if (addMemberTypeComboBox.Text == "Producer")
+                {
+                    newMember.Type = int.Parse("3");
+                }
+                if (addMemberTypeComboBox.Text == "Director of photography")
+                {
+                    newMember.Type = int.Parse("4");
+                }
 
-            //  Read members from the database
-            ReadMembersDB();
 
-            //  Read member list and display updated data
-            UpdateMemberListBox();
+                //  Empty Members list
+                memberList = new List<Member>();
 
-            //  Method to clear add member TextBox/ComboBox data
-            ClearAddMemberInputs();
+                //  Call method to insert add member fields from form to a member object in the list
+                InsertDBMember(newMember);
 
-            //  Repopulate ComboBox
-            addMemberTypeComboBox.Items.Add("Actor/Actresse");
-            addMemberTypeComboBox.Items.Add("Director");
-            addMemberTypeComboBox.Items.Add("Producer");
-            addMemberTypeComboBox.Items.Add("Director of photography");
+                //  Clear imageList for adding member item
+                membersImageList.Images.Clear();
+
+                //  Read members from the database
+                ReadMembersDB();
+
+                //  Read member list and display updated data
+                UpdateMemberListBox();
+
+                //  Method to clear add member TextBox/ComboBox data
+                ClearAddMemberInputs();
+
+                //  Repopulate ComboBox
+                addMemberTypeComboBox.Items.Add("Actor/Actresse");
+                addMemberTypeComboBox.Items.Add("Director");
+                addMemberTypeComboBox.Items.Add("Producer");
+                addMemberTypeComboBox.Items.Add("Director of photography");
+            }
         }
 
         private int ModifyDBMember(Member modifyMember)
@@ -1230,11 +1325,37 @@ namespace XMM2
 
         private void SaveMemberButton_Click(object sender, EventArgs e)
         {
-            //  Check if a ListBox selection for members exists
-            if (membersListBox.SelectedIndex < 0)
+            //  Declare int and decimal variable for integer/decimal checking
+            int num = -1;
+
+            //  Checks if the DOB entry is the correct input type (YYYY-MM-DD)
+            var stringToValidate = memberDOBTextBox.Text;
+            DateTime dt;
+            bool correctDate = DateTime.TryParseExact(stringToValidate, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dt);
+
+            //  Create array of TextBoxes
+            var textBoxCollection = new[] { memberNameTextBox, memberDOBTextBox, memberImagePathTextBox };
+
+            //  Declare boolean value to use for array
+            bool atleastOneTextboxEmpty;
+
+            //  Check if any TextBoxes are empty within the array
+            if (atleastOneTextboxEmpty = textBoxCollection.Any(t => String.IsNullOrWhiteSpace(t.Text)))
             {
                 //  Show error message
-                MessageBox.Show("Select a member from the ListBox first if you wish to make any changes.");
+                MessageBox.Show("Not all entries for MODIFYiNG MEMBER are filled.");
+            }
+            //  Check if ComboBox is empty
+            else if (memberTypeComboBox.Text == "")
+            {
+                //  Show error message
+                MessageBox.Show("Select a member type from the ComboBox.");
+            }
+            //  Date checking for DOB
+            else if (correctDate == false)
+            {
+                //  Show error message
+                MessageBox.Show("Invalid date input. Use the format YYYY-MM-DD.");
             }
             else
             {
@@ -1468,47 +1589,90 @@ namespace XMM2
         }
         private void SaveMovieButton_Click(object sender, EventArgs e)
         {
-            //  Declare movie variable
-            Movie modifyMovie = new Movie();
+            //  Declare int and decimal variable for integer/decimal checking
+            int num = -1;
+            decimal d;
 
-            //  Modified movie data values pointed to the modify movie fields
-            //  ID is not able to be changed due to it being the primary key
-            modifyMovie.ID = int.Parse(idTextBox.Text);
-            modifyMovie.Title = titleTextBox.Text;
-            modifyMovie.Year = int.Parse(yearTextBox.Text);
-            modifyMovie.Length = int.Parse(lengthTextBox.Text);
-            modifyMovie.Rating = double.Parse(ratingTextBox.Text);
-            modifyMovie.ImagePath = imagePathTextBox.Text;
+            //  Create array of TextBoxes
+            var textBoxCollection = new[] { titleTextBox, yearTextBox, lengthTextBox, imagePathTextBox, ratingTextBox };
 
-            //  Empty Movies list
-            movieList = new List<Movie>();
+            //  Declare boolean value to use for array
+            bool atleastOneTextboxEmpty;
 
-            //  Call method to insert add movie fields from form to a movie object in the list
-            ModifyDBMovie(modifyMovie);
+            //  Check if any TextBoxes are empty within the array
+            if (atleastOneTextboxEmpty = textBoxCollection.Any(t => String.IsNullOrWhiteSpace(t.Text)))
+            {
+                //  Show error message
+                MessageBox.Show("Not all entries for MODIFYING MOVIE are filled.");
+            }
+            //  Check if ComboBox is empty
+            else if (genreComboBox.Text == "")
+            {
+                //  Show error message
+                MessageBox.Show("Select a genre from the ComboBox.");
+            }
+            //  Integer checking for year
+            else if (!int.TryParse(yearTextBox.Text, out num))
+            {
+                //  Show error message
+                MessageBox.Show("Invalid year input. Use an integer instead.");
+            }
+            //  Integer checking for length
+            else if (!int.TryParse(lengthTextBox.Text, out num))
+            {
+                //  Show error message
+                MessageBox.Show("Invalid length input. Use an integer instead.");
+            }
+            //  Number checking for rating
+            else if (!decimal.TryParse(ratingTextBox.Text, out d))
+            {
+                //  Show error message
+                MessageBox.Show("Invalid rating input. Use a number instead.");
+            }
+            else
+            {
+                //  Declare movie variable
+                Movie modifyMovie = new Movie();
 
-            //  Clear imageList for adding movie item
-            movieImageList.Images.Clear();
+                //  Modified movie data values pointed to the modify movie fields
+                //  ID is not able to be changed due to it being the primary key
+                modifyMovie.ID = int.Parse(idTextBox.Text);
+                modifyMovie.Title = titleTextBox.Text;
+                modifyMovie.Year = int.Parse(yearTextBox.Text);
+                modifyMovie.Length = int.Parse(lengthTextBox.Text);
+                modifyMovie.Rating = double.Parse(ratingTextBox.Text);
+                modifyMovie.ImagePath = imagePathTextBox.Text;
 
-            //  Read movies from the database
-            ReadMoviesDB();
+                //  Empty Movies list
+                movieList = new List<Movie>();
 
-            //  Read movie list and display updated data
-            UpdateListView();
+                //  Call method to insert add movie fields from form to a movie object in the list
+                ModifyDBMovie(modifyMovie);
 
-            //  Remove movie data method
-            ClearMovieInputs();
+                //  Clear imageList for adding movie item
+                movieImageList.Images.Clear();
 
-            //  Read genres method
-            ReadGenresComboBox();
+                //  Read movies from the database
+                ReadMoviesDB();
 
-            //  Disable TextBoxes and Buttons to deny access for anymore changes made by the user
-            titleTextBox.Enabled = false;
-            yearTextBox.Enabled = false;
-            genreComboBox.Enabled = false;
-            movieImagePathButton.Enabled = false;
-            lengthTextBox.Enabled = false;
-            ratingTextBox.Enabled = false;
-            saveMovieButton.Enabled = false;
+                //  Read movie list and display updated data
+                UpdateListView();
+
+                //  Remove movie data method
+                ClearMovieInputs();
+
+                //  Read genres method
+                ReadGenresComboBox();
+
+                //  Disable TextBoxes and Buttons to deny access for anymore changes made by the user
+                titleTextBox.Enabled = false;
+                yearTextBox.Enabled = false;
+                genreComboBox.Enabled = false;
+                movieImagePathButton.Enabled = false;
+                lengthTextBox.Enabled = false;
+                ratingTextBox.Enabled = false;
+                saveMovieButton.Enabled = false;
+            }
         }
 
         private void TextBox1_TextChanged(object sender, EventArgs e)
@@ -1607,34 +1771,49 @@ namespace XMM2
 
         private void AddGenreButton_Click(object sender, EventArgs e)
         {
-            //  Declare genre variable
-            Genre newGenre = new Genre();
+            //  Create array of TextBoxes
+            var textBoxCollection = new[] { addGenreCodeTextBox, addGenreNameTextBox, addGenreDescriptionTextBox };
 
-            //  New genre data values pointed to the add genre fields
-            newGenre.Code = addGenreCodeTextBox.Text;
-            newGenre.Name = addGenreNameTextBox.Text;
-            newGenre.Description = addGenreDescriptionTextBox.Text;
+            //  Declare boolean value to use for array
+            bool atleastOneTextboxEmpty;
 
-            //  Empty Genres list
-            genreList = new List<Genre>();
+            //  Check if any TextBoxes are empty within the array
+            if (atleastOneTextboxEmpty = textBoxCollection.Any(t => String.IsNullOrWhiteSpace(t.Text)))
+            {
+                //  Show error message
+                MessageBox.Show("Not all entries for ADD GENRE are filled.");
+            }
+            else
+            {
+                //  Declare genre variable
+                Genre newGenre = new Genre();
 
-            //  Call method to insert add genre fields from form to a genre object in the list
-            InsertDBGenre(newGenre);
+                //  New genre data values pointed to the add genre fields
+                newGenre.Code = addGenreCodeTextBox.Text;
+                newGenre.Name = addGenreNameTextBox.Text;
+                newGenre.Description = addGenreDescriptionTextBox.Text;
 
-            //  Clear ListBox
-            genreListBox.Items.Clear();
+                //  Empty Genres list
+                genreList = new List<Genre>();
 
-            //  Read genres from the database
-            ReadGenresDB();
+                //  Call method to insert add genre fields from form to a genre object in the list
+                InsertDBGenre(newGenre);
 
-            //  Clear inputs method
-            ClearAddGenreInputs();
+                //  Clear ListBox
+                genreListBox.Items.Clear();
 
-            //  Clear ComboBox
-            addMovieGenreComboBox.Items.Clear();
+                //  Read genres from the database
+                ReadGenresDB();
 
-            //  Method to repopulate addMovieGenreComboBox after a clear data method is used
-            RefreshAddMovieGenres();
+                //  Clear inputs method
+                ClearAddGenreInputs();
+
+                //  Clear ComboBox
+                addMovieGenreComboBox.Items.Clear();
+
+                //  Method to repopulate addMovieGenreComboBox after a clear data method is used
+                RefreshAddMovieGenres();
+            }
         }
 
         private void ModifyGenre_Click(object sender, EventArgs e)
@@ -1690,63 +1869,77 @@ namespace XMM2
             }
             else
             {
+                //  Create array of TextBoxes
+                var textBoxCollection = new[] { genreCodeTextBox, genreNameTextBox, genreDescriptionTextBox };
 
-                //  Declare genre variable
-                Genre modifyGenre = new Genre();
+                //  Declare boolean value to use for array
+                bool atleastOneTextboxEmpty;
 
-                //  Modified genre data values pointed to the modify genre fields
-                //  Code is not able to be changed due to it being the primary key
-                modifyGenre.Code = genreCodeTextBox.Text;
-                modifyGenre.Name = genreNameTextBox.Text;
-                modifyGenre.Description = genreDescriptionTextBox.Text;
+                //  Check if any TextBoxes are empty within the array
+                if (atleastOneTextboxEmpty = textBoxCollection.Any(t => String.IsNullOrWhiteSpace(t.Text)))
+                {
+                    //  Show error message
+                    MessageBox.Show("Not all entries for MODIFYING GENRE are filled.");
+                }
+                else
+                {
+                    //  Declare genre variable
+                    Genre modifyGenre = new Genre();
 
-                //  Empty Genres list
-                genreList = new List<Genre>();
+                    //  Modified genre data values pointed to the modify genre fields
+                    //  Code is not able to be changed due to it being the primary key
+                    modifyGenre.Code = genreCodeTextBox.Text;
+                    modifyGenre.Name = genreNameTextBox.Text;
+                    modifyGenre.Description = genreDescriptionTextBox.Text;
 
-                //  Call method to insert add genre fields from form to a genre object in the list
-                ModifyDBGenre(modifyGenre);
+                    //  Empty Genres list
+                    genreList = new List<Genre>();
 
-                //  Clear ListBox
-                genreListBox.Items.Clear();
+                    //  Call method to insert add genre fields from form to a genre object in the list
+                    ModifyDBGenre(modifyGenre);
 
-                //  Read genres from the database
-                ReadGenresDB();
+                    //  Clear ListBox
+                    genreListBox.Items.Clear();
 
-                //  Clear inputs method
-                ClearGenreInputs();
+                    //  Read genres from the database
+                    ReadGenresDB();
 
-                //  Disable TextBoxes and Buttons to deny access for anymore changes made by the user
-                genreNameTextBox.Enabled = false;
-                genreDescriptionTextBox.Enabled = false;
-                saveGenreButton.Enabled = false;
+                    //  Clear inputs method
+                    ClearGenreInputs();
 
-                //// -- Call these 4 instructions below to refresh the genre data -- ////
-                //// ---  in each ComboBox to prevent creating duplicate entries --- ////
+                    //  Disable TextBoxes and Buttons to deny access for anymore changes made by the user
+                    genreNameTextBox.Enabled = false;
+                    genreDescriptionTextBox.Enabled = false;
+                    saveGenreButton.Enabled = false;
 
-                //  Clear ComboBox
-                genreComboBox.Items.Clear();
+                    //// -- Call these 4 instructions below to refresh the genre data -- ////
+                    //// ---  in each ComboBox to prevent creating duplicate entries --- ////
 
-                //  Method to repopulate genreComboBox after a clear data method is used
-                ReadGenresComboBox();
+                    //  Clear ComboBox
+                    genreComboBox.Items.Clear();
 
-                //  Clear ComboBox
-                addMovieGenreComboBox.Items.Clear();
+                    //  Method to repopulate genreComboBox after a clear data method is used
+                    ReadGenresComboBox();
 
-                //  Method to repopulate addMovieGenreComboBox after a clear data method is used
-                RefreshAddMovieGenres();
+                    //  Clear ComboBox
+                    addMovieGenreComboBox.Items.Clear();
+
+                    //  Method to repopulate addMovieGenreComboBox after a clear data method is used
+                    RefreshAddMovieGenres();
 
 
-                //// -- Call these 3 instructions below to refresh the genre data -- ////
-                //// ---  associated with each movie after a genre modification  --- ////
+                    //// -- Call these 3 instructions below to refresh the genre data -- ////
+                    //// ---  associated with each movie after a genre modification  --- ////
 
-                //  Empty Movies list
-                movieList = new List<Movie>();
+                    //  Empty Movies list
+                    movieList = new List<Movie>();
 
-                //  Read movies from the database
-                ReadMoviesDB();
+                    //  Read movies from the database
+                    ReadMoviesDB();
 
-                //  Read movie list and display updated data
-                UpdateListView();
+                    //  Read movie list and display updated data
+                    UpdateListView();
+                }
             }
         }
     }

@@ -130,7 +130,6 @@
             this.movieSearchTextBox = new System.Windows.Forms.TextBox();
             this.movieSearchLabel = new System.Windows.Forms.Label();
             this.resetMovieSearchButton = new System.Windows.Forms.Button();
-            this.genreAddListBox = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.moviePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.memberPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -506,6 +505,7 @@
             this.genreCodeTextBox.Enabled = false;
             this.genreCodeTextBox.Location = new System.Drawing.Point(291, 397);
             this.genreCodeTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.genreCodeTextBox.MaxLength = 3;
             this.genreCodeTextBox.Name = "genreCodeTextBox";
             this.genreCodeTextBox.Size = new System.Drawing.Size(161, 22);
             this.genreCodeTextBox.TabIndex = 80;
@@ -609,6 +609,7 @@
             // 
             this.addGenreCodeTextBox.Location = new System.Drawing.Point(91, 575);
             this.addGenreCodeTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.addGenreCodeTextBox.MaxLength = 3;
             this.addGenreCodeTextBox.Name = "addGenreCodeTextBox";
             this.addGenreCodeTextBox.Size = new System.Drawing.Size(161, 22);
             this.addGenreCodeTextBox.TabIndex = 96;
@@ -1109,21 +1110,11 @@
             this.resetMovieSearchButton.UseVisualStyleBackColor = true;
             this.resetMovieSearchButton.Click += new System.EventHandler(this.ResetMovieSearchButton_Click);
             // 
-            // genreAddListBox
-            // 
-            this.genreAddListBox.FormattingEnabled = true;
-            this.genreAddListBox.ItemHeight = 16;
-            this.genreAddListBox.Location = new System.Drawing.Point(997, 490);
-            this.genreAddListBox.Name = "genreAddListBox";
-            this.genreAddListBox.Size = new System.Drawing.Size(133, 100);
-            this.genreAddListBox.TabIndex = 168;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1357, 731);
-            this.Controls.Add(this.genreAddListBox);
             this.Controls.Add(this.resetMovieSearchButton);
             this.Controls.Add(this.movieSearchLabel);
             this.Controls.Add(this.movieSearchTextBox);
